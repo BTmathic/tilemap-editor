@@ -1,0 +1,39 @@
+@mixin mapWidth($width) {
+  width: floor($width)
+}
+
+//$map-height: floor($vw*0.95/34);
+//$map-width: floor(@include mapWidth(13px)/34); // 60% of viewport width
+
+.editor {
+  align-items: center;
+  background-image: url('../../granite.png');
+  background-repeat: repeat;
+  display: flex;
+  height: 100vh;
+  justify-content: space-around;
+  width: 100vw;
+  .map-pane {
+    background: black;
+    display: flex;
+    flex-wrap: wrap;
+    height: 95vh;
+    width: calc(95% - 300px);
+    //width: calc($map-width*34px);
+    //@include mapWidth($width);
+  }
+  .tile-pane {
+    background: black;
+    display: flex;
+    flex-wrap: wrap;
+    height: 95vh;
+    width: 272px
+  }
+  .tile {
+    border-width: 1px;
+    border-style: solid;
+    cursor: pointer;
+    height: 32px;
+    width: 32px;
+  }
+}
