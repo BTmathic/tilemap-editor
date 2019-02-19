@@ -31,7 +31,7 @@ export default class Editor extends React.Component {
       const tileIndex = Math.floor(mouseX / 34) + 20 * Math.floor(mouseY / 34);
       if (mouseX > -1 && tileIndex > -1 && tileIndex < 400) { // change tile < 100 condition
         const map = this.state.map;
-        map[tileIndex] = 'cyan';
+        map[tileIndex] = this.state.activeTile;
         this.setState(() => ({ activeTile: '', map }));
       }
     }
@@ -64,7 +64,7 @@ export default class Editor extends React.Component {
           <div
             className='tile'
             style={{
-              border: '2px solid cyan',
+              border: `2px solid ${this.state.activeTile}`,
               position: 'absolute',
               left: this.state.mouseX,
               top: this.state.mouseY
