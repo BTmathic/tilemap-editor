@@ -1,10 +1,11 @@
 import React from 'react';
 
 export default (props) => (
-  <div className='tile' style={{borderColor: props.colour}}
+  <div className={`tile ${props.tileClass}`}
     onClick={(e) => {
       if (props.tileType === 'newTile') {
-        props.onTileClick(props.colour, e.clientX - 25, e.clientY - 25)
+        props.onTileClick(props.tileClass, e.clientX - 25, e.clientY - 25)
+
       }
     }}
   >

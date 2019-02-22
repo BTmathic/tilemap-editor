@@ -1,0 +1,154 @@
+.castle {
+  .tile00, .tile01, .tile02, .tile03, .tile04, .tile05, .tile06, .tile07,
+  .tile10, .tile11, .tile12, .tile13, .tile14, .tile15, .tile16, .tile17,
+  .tile20, .tile21, .tile22, .tile23, .tile24, .tile25, .tile26, .tile27,
+  .tile30, .tile31, .tile32, .tile33, .tile34, .tile35, .tile36, .tile37,
+  .tile40, .tile41, .tile42, .tile43, .tile44, .tile45, .tile46, .tile47,
+  .tile50, .tile51, .tile52, .tile53, .tile54, .tile55, .tile56, .tile57,
+  .tile60, .tile61, .tile62, .tile63, .tile64, .tile65, .tile66, .tile67,
+  .tile70, .tile71, .tile72, .tile73, .tile74, .tile75, .tile76, .tile77,
+  .tile80, .tile81, .tile82, .tile83, .tile84, .tile85, .tile86, .tile87,
+  .tile90, .tile91, .tile92, .tile93, .tile94, .tile95, .tile96, .tile97,
+  .tile100, .tile101, .tile102, .tile103, .tile104, .tile105, .tile106, .tile107,
+  .tile110, .tile111, .tile112, .tile113, .tile114, .tile115, .tile116, .tile117,
+  .tile120, .tile121, .tile122, .tile123, .tile124, .tile125, .tile126, .tile127,
+  .tile130, .tile131, .tile132, .tile133, .tile134, .tile135, .tile136, .tile137,
+  .tile140, .tile141, .tile142, .tile143, .tile144, .tile145, .tile146, .tile147,
+  .tile150, .tile151, .tile152, .tile153, .tile154, .tile155, .tile156, .tile157 {
+    background-image: url('../../tiles/Castle2.png');
+    background-position-y: 10%;
+    background-repeat: no-repeat;
+    border: 1px solid grey;
+    height: 32px;
+    position: relative;
+    width: 32px;
+  }
+  .tile00 { background-position: 0% 0% }
+  .tile01 { background-position: 6.67% 0% }
+  .tile02 { background-position: 13.33% 0% }
+  .tile03 { background-position: 20% 0% }
+  .tile04 { background-position: 26.67% 0% }
+  .tile05 { background-position: 33.33% 0% }
+  .tile06 { background-position: 40% 0% }
+  .tile07 { background-position: 46.67% 0% }
+  .tile10 { background-position: 0 6.67% }
+  .tile11 { background-position: 6.67% 6.67% }
+  .tile12 { background-position: 13.33% 6.67% }
+  .tile13 { background-position: 20% 6.67% }
+  .tile14 { background-position: 26.67% 6.67% }
+  .tile15 { background-position: 33.33% 6.67% }
+  .tile16 { background-position: 40% 6.67% }
+  .tile17 { background-position: 46.67% 6.67% }
+  .tile20 { background-position: 0 13.33% }
+  .tile21 { background-position: 6.67% 13.33% }
+  .tile22 { background-position: 13.33% 13.33% }
+  .tile23 { background-position: 20% 13.33% }
+  .tile24 { background-position: 26.67% 13.33% }
+  .tile25 { background-position: 33.33% 13.33% }
+  .tile26 { background-position: 40% 13.33% }
+  .tile27 { background-position: 46.67% 13.33% }
+  .tile30 { background-position: 0 20% }
+  .tile31 { background-position: 6.67% 20% }
+  .tile32 { background-position: 13.33% 20% }
+  .tile33 { background-position: 20% 20% }
+  .tile34 { background-position: 26.67% 20% }
+  .tile35 { background-position: 33.33% 20% }
+  .tile36 { background-position: 40% 20% }
+  .tile37 { background-position: 46.67% 20% }
+  .tile40 { background-position: 0 26.67% }
+  .tile41 { background-position: 6.67% 26.67% }
+  .tile42 { background-position: 13.33% 26.67% }
+  .tile43 { background-position: 20% 26.67% }
+  .tile44 { background-position: 26.67% 26.67% }
+  .tile45 { background-position: 33.33% 26.67% }
+  .tile46 { background-position: 40% 26.67% }
+  .tile47 { background-position: 46.67% 26.67% }
+  .tile50 { background-position: 0 33.33% }
+  .tile51 { background-position: 6.67% 33.33% }
+  .tile52 { background-position: 13.33% 33.33% }
+  .tile53 { background-position: 20% 33.33% }
+  .tile54 { background-position: 26.67% 33.33% }
+  .tile55 { background-position: 33.33% 33.33% }
+  .tile56 { background-position: 40% 33.33% }
+  .tile57 { background-position: 46.67% 33.33% }
+  .tile60 { background-position: 0 40% }
+  .tile61 { background-position: 6.67% 40% }
+  .tile62 { background-position: 13.33% 40% }
+  .tile63 { background-position: 20% 40% }
+  .tile64 { background-position: 26.67% 40% }
+  .tile65 { background-position: 33.33% 40% }
+  .tile66 { background-position: 40% 40% }
+  .tile67 { background-position: 46.67% 40% }
+  .tile70 { background-position: 0 46.67% }
+  .tile71 { background-position: 6.67% 46.67% }
+  .tile72 { background-position: 13.33% 46.67% }
+  .tile73 { background-position: 20% 46.67% }
+  .tile74 { background-position: 26.67% 46.67% }
+  .tile75 { background-position: 33.33% 46.67% }
+  .tile76 { background-position: 40% 46.67% }
+  .tile77 { background-position: 46.67% 46.67% }
+  .tile80 { background-position: 0 53.33% }
+  .tile81 { background-position: 6.67% 53.33% }
+  .tile82 { background-position: 13.33% 53.33% }
+  .tile83 { background-position: 20% 53.33% }
+  .tile84 { background-position: 26.67% 53.33% }
+  .tile85 { background-position: 33.33% 53.33% }
+  .tile86 { background-position: 40% 53.33% }
+  .tile87 { background-position: 46.67% 53.33% }
+  .tile90 { background-position: 0 60% }
+  .tile91 { background-position: 6.67% 60% }
+  .tile92 { background-position: 13.33% 60% }
+  .tile93 { background-position: 20% 60% }
+  .tile94 { background-position: 26.67% 60% }
+  .tile95 { background-position: 33.33% 60% }
+  .tile96 { background-position: 40% 60% }
+  .tile97 { background-position: 46.67% 60% }
+  .tile100 { background-position: 0 67.77% }
+  .tile101 { background-position: 6.67% 67.77% }
+  .tile102 { background-position: 13.33% 67.77% }
+  .tile103 { background-position: 20% 67.77% }
+  .tile104 { background-position: 26.67% 67.77% }
+  .tile105 { background-position: 33.33% 67.77% }
+  .tile106 { background-position: 40% 67.77% }
+  .tile107 { background-position: 46.67% 67.77% }
+  .tile110 { background-position: 0 73.33% }
+  .tile111 { background-position: 6.67% 73.33% }
+  .tile112 { background-position: 13.33% 73.33% }
+  .tile113 { background-position: 20% 73.33% }
+  .tile114 { background-position: 26.67% 73.33% }
+  .tile115 { background-position: 33.33% 73.33% }
+  .tile116 { background-position: 40% 73.33% }
+  .tile117 { background-position: 46.67% 73.33% }
+  .tile120 { background-position: 0 80% }
+  .tile121 { background-position: 6.67% 80% }
+  .tile122 { background-position: 13.33% 80% }
+  .tile123 { background-position: 20% 80% }
+  .tile124 { background-position: 26.67% 80% }
+  .tile125 { background-position: 33.33% 80% }
+  .tile126 { background-position: 40% 80% }
+  .tile127 { background-position: 46.67% 80% }
+  .tile130 { background-position: 0 86.67% }
+  .tile131 { background-position: 6.67% 86.67% }
+  .tile132 { background-position: 13.33% 86.67% }
+  .tile133 { background-position: 20% 86.67% }
+  .tile134 { background-position: 26.67% 86.67% }
+  .tile135 { background-position: 33.33% 86.67% }
+  .tile136 { background-position: 40% 86.67% }
+  .tile137 { background-position: 46.67% 86.67% }
+  .tile140 { background-position: 0 93.33% }
+  .tile141 { background-position: 6.67% 93.33% }
+  .tile142 { background-position: 13.33% 93.33% }
+  .tile143 { background-position: 20% 93.33% }
+  .tile144 { background-position: 26.67% 93.33% }
+  .tile145 { background-position: 33.33% 93.33% }
+  .tile146 { background-position: 40% 93.33% }
+  .tile147 { background-position: 46.67% 93.33% }
+  .tile150 { background-position: 0 100% }
+  .tile151 { background-position: 6.67% 100% }
+  .tile152 { background-position: 13.33% 100% }
+  .tile153 { background-position: 20% 100% }
+  .tile154 { background-position: 26.67% 100% }
+  .tile155 { background-position: 33.33% 100% }
+  .tile156 { background-position: 40% 100% }
+  .tile157 { background-position: 46.67% 100% }
+}

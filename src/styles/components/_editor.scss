@@ -3,7 +3,7 @@
 }
 
 //$map-height: floor($vw*0.95/34);
-//$map-width: floor(@include mapWidth(13px)/34); // 60% of viewport width
+//$map-width: floor(@include mapWidth(13px)/34); // 67.77% of viewport width
 
 .editor {
   align-items: center;
@@ -26,7 +26,7 @@
     background: black;
     display: flex;
     flex-wrap: wrap;
-    height: 95vh;
+    height: 544px;
     width: 272px
   }
   .tile {

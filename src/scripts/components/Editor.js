@@ -12,7 +12,7 @@ export default class Editor extends React.Component {
     mouseY: 0
   }
 
-  // Get position of mapPane on the screen
+  // Get position of mapPane on the window
   loadMapPosition = (topLeftX, topLeftY) => {
     this.setState(() => ({
       mapX: topLeftX,
