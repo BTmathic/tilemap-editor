@@ -6,32 +6,37 @@
 //$map-width: floor(@include mapWidth(13px)/34); // 67.77% of viewport width
 
 .editor {
-  align-items: center;
   background-image: url('../../granite.png');
   background-repeat: repeat;
-  display: flex;
-  height: 100vh;
-  justify-content: space-around;
+  padding-top: 2vh;
+  height: 98vh;
   width: 100vw;
-  .map-pane {
-    background: black;
+  .editor--fixed {
+    align-items: center;
     display: flex;
-    flex-wrap: wrap;
-    height: 95vh;
-    width: calc(95% - 300px);
-    //width: calc($map-width*34px);
-    //@include mapWidth($width);
-  }
-  .tile-pane {
-    background: black;
-    display: flex;
-    flex-wrap: wrap;
-    height: 544px;
-    width: 272px
+    justify-content: space-around;
+    .map-pane {
+      background: black;
+      display: flex;
+      flex-wrap: wrap;
+      height: 95vh;
+      width: calc(95% - 300px);
+      //width: calc($map-width*34px);
+      //@include mapWidth($width);
+    }
+    .tile-pane {
+      background: black;
+      height: 560px;
+      overflow-x: scroll;
+      width: 272px;
+      .tile-pane--visible {
+        display: flex;
+        flex-wrap: wrap;
+        width: 544px;
+      }
+    }
   }
   .tile {
-    border-width: 1px;
-    border-style: solid;
     cursor: pointer;
     height: 32px;
     width: 32px;

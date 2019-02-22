@@ -9,7 +9,8 @@ export default class Editor extends React.Component {
     drag: false,
     map: blankMap,
     mouseX: 0,
-    mouseY: 0
+    mouseY: 0,
+    tilesOnPane: 'castle'
   }
 
   // Get position of mapPane on the window
@@ -34,8 +35,8 @@ export default class Editor extends React.Component {
         map[tileIndex] = this.state.activeTile;
         this.setState(() => ({ activeTile: '', map }));
       }
+      this.setState((prevState) => ({ drag: !prevState.drag }));
     }
-    this.setState((prevState) => ({ drag: !prevState.drag }))
   }
 
   onMouseMove = (e) => {
@@ -61,24 +62,28 @@ export default class Editor extends React.Component {
     return (
       <div className='editor' onMouseMove={this.onMouseMove}>
         { this.state.activeTile && 
-          <div
-            className='tile'
-            style={{
-              border: `2px solid ${this.state.activeTile}`,
-              position: 'absolute',
-              left: this.state.mouseX,
-              top: this.state.mouseY
-            }}
-            onClick={this.onMapClick}
-          >
+          <div className={this.state.tilesOnPane}>
+            <div
+              className={`tile ${this.state.activeTile}`}
+              style={{
+                position: 'absolute',
+                left: this.state.mouseX,
+                top: this.state.mouseY
+              }}
+              onClick={this.onMapClick}
+            >
+            </div>
           </div>
         }
-        <TilePane onTileClick={this.onTileClick} />
-        <MapPane
-          loadMapPosition={this.loadMapPosition}
-          activeTile={this.state.activeTile}
-          map={this.state.map} 
-        />
+        <div className='editor--fixed'>
+          <TilePane onTileClick={this.onTileClick} tilesOnPane={this.state.tilesOnPane} />
+          <MapPane
+            loadMapPosition={this.loadMapPosition}
+            activeTile={this.state.activeTile}
+            map={this.state.map}
+            tilesOnPane={this.state.tilesOnPane}
+          />
+        </div>
       </div>
     );
   }

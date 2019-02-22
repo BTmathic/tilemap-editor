@@ -9,11 +9,11 @@ export default class MapPane extends React.Component {
 
   render() {
     return (
-      <div className='map-pane'
+      <div className={`map-pane ${this.props.tilesOnPane}`}
         ref={(mapPane) => this.mapPane = mapPane}
       >
-        {this.props.map.map((tile, index) => {
-          return <Tile colour={tile} key={tile + index} tileType={'map'} />
+        {this.props.map.map((tileClass, index) => {
+          return <Tile tileClass={tileClass} key={tileClass + index} tileType={'map'} />
         })}
       </div>
     );
