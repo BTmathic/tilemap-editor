@@ -5,36 +5,57 @@
 //$map-height: floor($vw*0.95/34);
 //$map-width: floor(@include mapWidth(13px)/34); // 67.77% of viewport width
 
+h1 {
+  background-image: url('../../granite.png');
+  background-repeat: repeat;
+  color: gold;
+  margin: 0;
+  padding: 1rem;
+  text-align: center;
+}
+
 .editor {
   background-image: url('../../granite.png');
   background-repeat: repeat;
   padding-top: 2vh;
   height: 98vh;
-  width: 100vw;
+  
   .editor--fixed {
     align-items: center;
     display: flex;
     justify-content: space-around;
     .map-pane {
       background: black;
-      display: flex;
-      flex-wrap: wrap;
-      height: 95vh;
+      height: 543px;
+      max-height: 95vh;
       width: calc(95% - 300px);
+      overflow: scroll;
+      min-width: 600px;
       //width: calc($map-width*34px);
       //@include mapWidth($width);
+      .map-pane--visible {
+        display: flex;
+        flex-wrap: wrap;
+        height: 1320px;
+        width: 1320px;
+      }
     }
     .tile-pane {
       background: black;
-      height: 560px;
+      height: 543px;
       overflow-x: scroll;
       width: 272px;
       .tile-pane--visible {
         display: flex;
         flex-wrap: wrap;
-        width: 544px;
+        width: 528px;
       }
     }
+  }
+  .map-dimensions {
+    background: grey;
+    margin: 16px auto;
+    width: 33%;
   }
   .tile {
     cursor: pointer;
