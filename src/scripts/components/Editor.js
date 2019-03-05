@@ -6,13 +6,36 @@ export default class Editor extends React.Component {
   state = {
     activeTile: '',
     drag: false,
+    mapHeight: 40,
     map: Array(1600).fill('blank'),
     mapScrollOffsetX: 0,
     mapScrollOffsetY: 0,
+    mapWidth: 40,
     mouseX: 0,
     mouseY: 0,
     pageScrollOffset: 0,
     tilesOnPane: 'castle'
+  }
+
+  // change these two functions to a single one that fires with a submit 
+  // button so we can caution before removing non-empty tiles
+  changeMapHeight = (e) => {
+    const mapHeight = e.currentTarget.value;
+    let newMap = this.state.map;
+    if (mapHeight > this.state.mapHeight) {
+      for (let i = 0; i < mapHeight * this.state.mapWidth; i++) {
+        newMap.push('blank');
+      }
+    } else {
+      newMap = this.state.map.slice(0, mapHeight*this.state.mapWidth);
+    }
+    this.setState(() => ({ mapHeight, map: newMap }));
+  }
+
+  // change array as well, but do so carefully so as to not delete content (if possible)
+  changeMapWidth = (e) => {
+    const mapWidth = e.currentTarget.value;
+    this.setState(() => ({ mapWidth }));
   }
 
   handleScroll = (e) => {
@@ -34,17 +57,26 @@ export default class Editor extends React.Component {
   // swap tile if over tiles
   // do nothing otherwise
   onMapClick = (e) => {
+    e.persist();
+    const map = this.state.map;
+    const mouseX = e.clientX - this.state.mapX + this.state.mapScrollOffsetX;
+    const mouseY = e.clientY - this.state.mapY + this.state.mapScrollOffsetY + this.state.pageScrollOffset;
+    const tileIndex = Math.floor(mouseX / 33) + 40 * Math.floor(mouseY / 33);
     if (this.state.drag) {
-      e.persist();
-      const mouseX = e.clientX - this.state.mapX + this.state.mapScrollOffsetX;
-      const mouseY = e.clientY - this.state.mapY + this.state.mapScrollOffsetY + this.state.pageScrollOffset;
-      const tileIndex = Math.floor(mouseX / 33) + 40 * Math.floor(mouseY / 33);
-      if (mouseX > -1 && tileIndex > -1 && tileIndex < 1600) { // change tile < 100 condition
-        const map = this.state.map;
-        map[tileIndex] = this.state.activeTile;
-        this.setState(() => ({ activeTile: '', map }));
+      if (mouseX > -1 && tileIndex > -1 && tileIndex < map.length) {
+        // this doesn't swap tiles if you click the TilePane with a tile being dragged
+        if (map[tileIndex] === 'blank') {
+          map[tileIndex] = this.state.activeTile;
+          this.setState(() => ({ map }));
+        } else {
+          // console.log('place another tile');
+        }
+      } else {
+        this.setState(() => ({ activeTile: '', drag: false }));
       }
-      this.setState((prevState) => ({ drag: !prevState.drag }));
+    } else {
+      // console.log('test click when not dragging for tile removal');
+      console.log(map[tileIndex]);
     }
   }
 
@@ -69,6 +101,7 @@ export default class Editor extends React.Component {
   }
 
   componentDidMount() {
+    // add window resize listener as CSS changes but JS does not
     window.addEventListener('scroll', this.handleScroll);
   }
 
@@ -90,7 +123,8 @@ export default class Editor extends React.Component {
                 style={{
                   position: 'absolute',
                   left: this.state.mouseX,
-                  top: this.state.mouseY
+                  top: this.state.mouseY,
+                  zIndex: 10
                 }}
                 onClick={this.onMapClick}
               >
@@ -104,9 +138,21 @@ export default class Editor extends React.Component {
               activeTile={this.state.activeTile}
               map={this.state.map}
               tilesOnPane={this.state.tilesOnPane}
+              onMapClick={this.onMapClick}
             />
           </div>
-          <div className='map-dimensions'>Dimensions</div>
+          <div className='map-dimensions'>Map Dimensions
+            <form>
+              <div>
+                <label>Height:</label>
+                <input name='Height: ' type='number' value={this.state.mapHeight} onChange={this.changeMapHeight} />
+              </div>
+              <div>
+                <label>Width:</label>
+                <input name='Width: ' type='number' value={this.state.mapWidth} onChange={this.changeMapWidth} />
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     );

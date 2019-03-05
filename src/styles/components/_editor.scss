@@ -54,8 +54,22 @@ h1 {
   }
   .map-dimensions {
     background: grey;
+    height: 50px;
     margin: 16px auto;
+    text-align: center;
     width: 33%;
+    form {
+      display: flex;
+      justify-content: space-around;
+      padding: 0.2rem 0;
+      label {
+        padding: 0.2rem 0 0;
+      }
+      input {
+        margin: 0 1rem;
+        width: 30%;
+      }
+    }
   }
   .tile {
     cursor: pointer;

@@ -27,7 +27,14 @@ export default class MapPane extends React.Component {
           
         >
           {this.props.map.map((tileClass, index) => {
-            return <Tile tileClass={tileClass} key={tileClass + index} tileType={'map'} />
+            return (
+              <Tile
+                tileClass={tileClass}
+                key={tileClass + index}
+                tileType={'map'}
+                onMapClick={this.props.onMapClick}
+              />
+            );
           })}
         </div>
       </div>
