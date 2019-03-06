@@ -17,7 +17,7 @@ export default class MapPane extends React.Component {
   componentDidMount() {
     const coords = this.mapPane.getBoundingClientRect();
     this.setState(() => ({ coords }));
-    this.props.loadMapPosition(this.state.scrollLeft, this.state.scrollTop, coords.x, coords.y);
+    this.props.loadMapPosition(coords.width, this.state.scrollLeft, this.state.scrollTop, coords.x, coords.y);
   }
 
   render() {

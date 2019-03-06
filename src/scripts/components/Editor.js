@@ -8,6 +8,7 @@ export default class Editor extends React.Component {
     drag: false,
     mapHeight: 40,
     map: Array(1600).fill(['blank']),
+    mapDOMWidth: 0,
     mapScrollOffsetX: 0,
     mapScrollOffsetY: 0,
     mapWidth: 40,
@@ -44,8 +45,9 @@ export default class Editor extends React.Component {
   }
 
   // Get position of mapPane on the window
-  loadMapPosition = (mapScrollLeft, mapScrollTop, mapTopLeftX, mapTopLeftY) => {
+  loadMapPosition = (mapDOMWidth, mapScrollLeft, mapScrollTop, mapTopLeftX, mapTopLeftY) => {
     this.setState(() => ({
+      mapDOMWidth,
       mapScrollOffsetX: mapScrollLeft,
       mapScrollOffsetY: mapScrollTop,
       mapX: mapTopLeftX,
@@ -53,9 +55,11 @@ export default class Editor extends React.Component {
     }));
   }
 
-  // place tile down if over the map
-  // swap tile if over tiles
-  // do nothing otherwise
+  // This function has two main parts, either clicking on the MapPane or elsewhere
+  // If dragging a tile, clicking the map places the tile in the corresponding spot,
+  // layering one on top of another if consecutive tiles are placed. If not dragging
+  // a tile, clicking brings up the placed tiles to allow deleting, if there are any.
+  // Otherwise, clicking outside the map removes the active tile from being dragged.
   onMapClick = (e, layer) => {
     e.persist();
     const map = this.state.map;
@@ -64,7 +68,13 @@ export default class Editor extends React.Component {
     const tileIndex = Math.floor(mouseX / 33) + 40 * Math.floor(mouseY / 33);
     if (this.state.drag) {
       // this if statement doesn't notice the mapPane size, just the full map size
-      if (mouseX > -1 && mouseX < this.state.mapWidth*33 && tileIndex > -1 && tileIndex < map.length) {
+      console.log(mouseX);
+      if (
+          mouseX - this.state.mapScrollOffsetX > -1 &&
+          mouseX - this.state.mapScrollOffsetX < this.state.mapDOMWidth &&
+          tileIndex > -1 &&
+          tileIndex < map.length
+      ) {
         // this doesn't swap tiles if you click the TilePane with a tile being dragged
         map[tileIndex] = map[tileIndex].concat(this.state.activeTile);
         this.setState(() => ({ map }));
@@ -72,7 +82,12 @@ export default class Editor extends React.Component {
         this.setState(() => ({ activeTile: '', drag: false }));
       }
     } else {
-      // console.log('test click when not dragging for tile removal');
+      // add a popup with each layered tile (if any)?
+      // for this, just use a state controlled box popup
+      // Or a modal that covers the TilePane would be good so as to never
+      // block the map to see what's going on
+
+      // Also, add a max number of layers. Five is probably fine, 10 to be safe?
       console.log(map[tileIndex]);
     }
   }
