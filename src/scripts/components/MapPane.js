@@ -23,19 +23,26 @@ export default class MapPane extends React.Component {
   render() {
     return (
       <div className='map-pane' onScroll={this.handleScroll} ref={(mapPane) => this.mapPane = mapPane}>
-        <div className={`map-pane--visible ${this.props.tilesOnPane}`}
-          
-        >
-          {this.props.map.map((tileClass, index) => {
+        <div className={`map-pane--visible ${this.props.tilesOnPane}`}>
+          {this.props.map.map((tileClasses, index) => {
             return (
-              <Tile
-                tileClass={tileClass}
-                key={tileClass + index}
-                tileType={'map'}
-                onMapClick={this.props.onMapClick}
-              />
-            );
-          })}
+              tileClasses.map((tileClass, layer) => {
+              return (
+                <Tile
+                  tileClass={tileClass}
+                  index={index}
+                  key={tileClass + index + layer}
+                  layer={layer}
+                  tileType={'map'}
+                  // onMapClick should only attach once per layer
+                  // technically it really only needs to attach to the grid
+                  // not any of the tiles
+                  onMapClick={this.props.onMapClick}
+                />
+              );
+            })
+          );
+        })}
         </div>
       </div>
     );

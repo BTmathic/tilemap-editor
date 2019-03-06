@@ -37,6 +37,7 @@ h1 {
         display: flex;
         flex-wrap: wrap;
         height: 1320px;
+        position: relative;
         width: 1320px;
       }
     }
@@ -48,6 +49,7 @@ h1 {
       .tile-pane--visible {
         display: flex;
         flex-wrap: wrap;
+        position: relative;
         width: 528px;
       }
     }
@@ -75,5 +77,8 @@ h1 {
     cursor: pointer;
     height: 32px;
     width: 32px;
+  }
+  .map-tile {
+    position: absolute;
   }
 }

@@ -7,7 +7,7 @@ export default class Editor extends React.Component {
     activeTile: '',
     drag: false,
     mapHeight: 40,
-    map: Array(1600).fill('blank'),
+    map: Array(1600).fill(['blank']),
     mapScrollOffsetX: 0,
     mapScrollOffsetY: 0,
     mapWidth: 40,
@@ -56,21 +56,18 @@ export default class Editor extends React.Component {
   // place tile down if over the map
   // swap tile if over tiles
   // do nothing otherwise
-  onMapClick = (e) => {
+  onMapClick = (e, layer) => {
     e.persist();
     const map = this.state.map;
     const mouseX = e.clientX - this.state.mapX + this.state.mapScrollOffsetX;
     const mouseY = e.clientY - this.state.mapY + this.state.mapScrollOffsetY + this.state.pageScrollOffset;
     const tileIndex = Math.floor(mouseX / 33) + 40 * Math.floor(mouseY / 33);
     if (this.state.drag) {
-      if (mouseX > -1 && tileIndex > -1 && tileIndex < map.length) {
+      // this if statement doesn't notice the mapPane size, just the full map size
+      if (mouseX > -1 && mouseX < this.state.mapWidth*33 && tileIndex > -1 && tileIndex < map.length) {
         // this doesn't swap tiles if you click the TilePane with a tile being dragged
-        if (map[tileIndex] === 'blank') {
-          map[tileIndex] = this.state.activeTile;
-          this.setState(() => ({ map }));
-        } else {
-          // console.log('place another tile');
-        }
+        map[tileIndex] = map[tileIndex].concat(this.state.activeTile);
+        this.setState(() => ({ map }));
       } else {
         this.setState(() => ({ activeTile: '', drag: false }));
       }
@@ -126,7 +123,7 @@ export default class Editor extends React.Component {
                   top: this.state.mouseY,
                   zIndex: 10
                 }}
-                onClick={this.onMapClick}
+                onClick={(e) => {this.onMapClick(e, 1)}}
               >
               </div>
             </div>
