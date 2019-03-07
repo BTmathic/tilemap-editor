@@ -4,17 +4,19 @@ import MapPane from './MapPane';
 
 export default class Editor extends React.Component {
   state = {
+    activeEdit: ['blank', 'tile0107'],
     activeTile: '',
     drag: false,
     mapHeight: 40,
     map: Array(1600).fill(['blank']),
+    mapDOMHeight: 0,
     mapDOMWidth: 0,
     mapScrollOffsetX: 0,
     mapScrollOffsetY: 0,
     mapWidth: 40,
     mouseX: 0,
     mouseY: 0,
-    pageScrollOffset: 0,
+    pageScrollOffset: window.scrollY,
     tilesOnPane: 'castle'
   }
 
@@ -39,14 +41,16 @@ export default class Editor extends React.Component {
     this.setState(() => ({ mapWidth }));
   }
 
-  handleScroll = (e) => {
+  handleScroll = () => {
     const pageScrollOffset = window.scrollY;
     this.setState(() => ({ pageScrollOffset }));
   }
 
   // Get position of mapPane on the window
-  loadMapPosition = (mapDOMWidth, mapScrollLeft, mapScrollTop, mapTopLeftX, mapTopLeftY) => {
+  loadMapPosition = (mapDOMHeight, mapDOMWidth, mapScrollLeft, mapScrollTop, mapTopLeftX, mapTopLeftY) => {
+    console.log(mapTopLeftY, window.scrollY, this.state.pageScrollOffset);
     this.setState(() => ({
+      mapDOMHeight,
       mapDOMWidth,
       mapScrollOffsetX: mapScrollLeft,
       mapScrollOffsetY: mapScrollTop,
@@ -65,30 +69,28 @@ export default class Editor extends React.Component {
     const map = this.state.map;
     const mouseX = e.clientX - this.state.mapX + this.state.mapScrollOffsetX;
     const mouseY = e.clientY - this.state.mapY + this.state.mapScrollOffsetY + this.state.pageScrollOffset;
-    const tileIndex = Math.floor(mouseX / 33) + 40 * Math.floor(mouseY / 33);
+    // console.log(e.clientY, this.state.mapY);
+    // console.log(mouseY);
+    const tileIndex = Math.floor(mouseX / 33) + this.state.mapWidth * Math.floor(mouseY / 33);
     if (this.state.drag) {
-      // this if statement doesn't notice the mapPane size, just the full map size
-      console.log(mouseX);
-      if (
+      if ( // mouse inside the MapPane DOM window, including scroll
           mouseX - this.state.mapScrollOffsetX > -1 &&
           mouseX - this.state.mapScrollOffsetX < this.state.mapDOMWidth &&
+          mouseY > 0 &&
+          mouseY - this.state.mapScrollOffsetY < this.state.mapDOMHeight &&
           tileIndex > -1 &&
-          tileIndex < map.length
+          tileIndex < map.length &&
+          map[tileIndex].length < 8 // we do not want to allow pointlessly adding tile after tile after tile
       ) {
-        // this doesn't swap tiles if you click the TilePane with a tile being dragged
         map[tileIndex] = map[tileIndex].concat(this.state.activeTile);
         this.setState(() => ({ map }));
-      } else {
+      } else { // mouse outside MapPaneDOM
         this.setState(() => ({ activeTile: '', drag: false }));
       }
     } else {
       // add a popup with each layered tile (if any)?
-      // for this, just use a state controlled box popup
-      // Or a modal that covers the TilePane would be good so as to never
-      // block the map to see what's going on
-
-      // Also, add a max number of layers. Five is probably fine, 10 to be safe?
-      console.log(map[tileIndex]);
+      //console.log(map[tileIndex]);
+      this.setState(() => ({ activeEdit: map[tileIndex] }));
     }
   }
 
@@ -122,13 +124,38 @@ export default class Editor extends React.Component {
   }
 
   render() {
+    console.log(this.state.activeEdit);
     return (
       <div>
         <div>
           <h1>Tilemap Editor</h1>
         </div>
         <div className='editor' onMouseMove={this.onMouseMove}>
-          {this.state.activeTile &&
+          {
+            this.state.activeEdit &&
+            <div className='edit-tiles'>
+              <h2>Tiles</h2>
+              <div className='edit-tile__tiles'>
+                <div className={this.state.tilesOnPane}>
+                  {this.state.activeEdit.map((tile, index) => {
+                    return <div className={`tile ${tile}`} key={index}></div>
+                  })}
+                </div>
+              </div>
+              <div className='edit-tiles--buttons'>
+                <div className='edit-tiles--button'>
+                  Save
+                </div>
+                <div className='edit-tiles--button'
+                  onClick={() => this.setState(() => ({ activeEdit: '' }))}
+                >
+                  Close
+                </div>
+              </div>
+            </div>
+          }
+          {
+            this.state.activeTile &&
             <div className={this.state.tilesOnPane}>
               <div
                 className={`tile ${this.state.activeTile}`}
@@ -138,7 +165,7 @@ export default class Editor extends React.Component {
                   top: this.state.mouseY,
                   zIndex: 10
                 }}
-                onClick={(e) => {this.onMapClick(e, 1)}}
+                onClick={(e) => { this.onMapClick(e, 1) }}
               >
               </div>
             </div>

@@ -19,7 +19,6 @@ h1 {
   background-repeat: repeat;
   padding-top: 2vh;
   height: 98vh;
-  
   .editor--fixed {
     align-items: center;
     display: flex;
@@ -51,6 +50,41 @@ h1 {
         flex-wrap: wrap;
         position: relative;
         width: 528px;
+      }
+    }
+  }
+  .edit-tiles {
+    background: grey;
+    border: 3px solid darken(gold, 15%);
+    color: darken(white, 5%);
+    height: 272px;
+    left: 2.5%;
+    position: absolute;
+    text-align: center;
+    top: 10vh;
+    width: 272px;
+    z-index: 10;
+    .edit-tile__tiles {
+      padding: 1rem;
+      .castle {
+        display: flex;
+        justify-content: space-evenly;
+      }
+      .tile {
+        border: 1px solid black;
+      }
+    }
+    .edit-tiles--buttons {
+      display: flex;
+      justify-content: space-evenly;
+      margin: 0 auto;
+      width: 80%;
+      .edit-tiles--button {
+        background: blue;
+        border-radius: 5px;
+        cursor: pointer;
+        padding: 0.5rem;
+        width: 30%;
       }
     }
   }

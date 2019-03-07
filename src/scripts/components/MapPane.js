@@ -8,16 +8,19 @@ export default class MapPane extends React.Component {
   }
 
   handleScroll = () => {
+    const scrollLeft = this.mapPane.scrollLeft;
+    const scrollTop = this.mapPane.scrollTop;
     this.setState(() => ({
-      scrollLeft: this.mapPane.scrollLeft,
-      scrollTop: this.mapPane.scrollTop
-    }), () => this.props.loadMapPosition(this.state.scrollLeft, this.state.scrollTop, this.state.coords.x, this.state.coords.y));
+      scrollLeft,
+      scrollTop
+    }));
+    this.props.loadMapPosition(this.state.coords.height, this.state.coords.width, scrollLeft, scrollTop, this.state.coords.x, this.state.coords.y + window.scrollY);
   }
   
   componentDidMount() {
     const coords = this.mapPane.getBoundingClientRect();
     this.setState(() => ({ coords }));
-    this.props.loadMapPosition(coords.width, this.state.scrollLeft, this.state.scrollTop, coords.x, coords.y);
+    this.props.loadMapPosition(coords.height, coords.width, this.state.scrollLeft, this.state.scrollTop, coords.x, coords.y + window.scrollY);
   }
 
   render() {
