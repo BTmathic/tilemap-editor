@@ -58,11 +58,11 @@ h1 {
     border: 3px solid darken(gold, 15%);
     color: darken(white, 5%);
     height: 272px;
-    left: 2.5%;
+    left: 1.5%;
     position: absolute;
     text-align: center;
     top: 10vh;
-    width: 272px;
+    width: 300px;
     z-index: 10;
     .edit-tile__tiles {
       padding: 1rem;
@@ -72,6 +72,9 @@ h1 {
       }
       .tile {
         border: 1px solid black;
+      }
+      .tile--delete {
+        border: 1px solid red;
       }
     }
     .edit-tiles--buttons {

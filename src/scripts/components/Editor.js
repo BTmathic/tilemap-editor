@@ -4,9 +4,11 @@ import MapPane from './MapPane';
 
 export default class Editor extends React.Component {
   state = {
-    activeEdit: ['blank', 'tile0107'],
+    activeEdit: '',
     activeTile: '',
+    confirmDelete: 0,
     drag: false,
+    editTileIndex: '',
     mapHeight: 40,
     map: Array(1600).fill(['blank']),
     mapDOMHeight: 0,
@@ -59,6 +61,32 @@ export default class Editor extends React.Component {
     }));
   }
 
+  // Two step delete function to edit the layers of tiles on the map
+  // First click simply selects a tile and warns/asks to confirm user wants
+  // the tile deleted. Second click deletes the tile. None of this is binding
+  // as the user must confirm saving the edits before the map is changed
+  onEditClick = (index) => {
+    const deleteTile = !!this.state.confirmDelete;
+    if (deleteTile) {
+      const activeEdit = this.state.activeEdit;
+      activeEdit.splice(index, 1);
+      this.setState(() => ({ activeEdit, confirmDelete: 0 }));
+    } else {
+      this.setState(() => ({ confirmDelete: index}));
+    }
+  }
+
+  // Save the current edit to a tile onto the map
+  onEditSave = () => {
+    const map = this.state.map;
+    map[this.state.editTileIndex] = this.state.activeEdit;
+    this.setState(() => ({
+      activeEdit: '',
+      editTileIndex: '',
+      map
+    }));
+  }
+
   // This function has two main parts, either clicking on the MapPane or elsewhere
   // If dragging a tile, clicking the map places the tile in the corresponding spot,
   // layering one on top of another if consecutive tiles are placed. If not dragging
@@ -87,10 +115,11 @@ export default class Editor extends React.Component {
       } else { // mouse outside MapPaneDOM
         this.setState(() => ({ activeTile: '', drag: false }));
       }
-    } else {
-      // add a popup with each layered tile (if any)?
-      //console.log(map[tileIndex]);
-      this.setState(() => ({ activeEdit: map[tileIndex] }));
+    } else { // clicking on the map loads a popup with each layer tile to edit
+      this.setState(() => ({
+        activeEdit: map[tileIndex].slice(),
+        editTileIndex: tileIndex
+      }));
     }
   }
 
@@ -106,12 +135,14 @@ export default class Editor extends React.Component {
   }
 
   onTileClick = (tile, mouseX, mouseY) => {
-    this.setState(() => ({
-      activeTile: tile,
-      drag: true,
-      mouseX,
-      mouseY
-    }));
+    if (!this.state.activeEdit) {
+      this.setState(() => ({
+        activeTile: tile,
+        drag: true,
+        mouseX,
+        mouseY
+      }));
+    }
   }
 
   componentDidMount() {
@@ -124,7 +155,6 @@ export default class Editor extends React.Component {
   }
 
   render() {
-    console.log(this.state.activeEdit);
     return (
       <div>
         <div>
@@ -137,17 +167,31 @@ export default class Editor extends React.Component {
               <h2>Tiles</h2>
               <div className='edit-tile__tiles'>
                 <div className={this.state.tilesOnPane}>
-                  {this.state.activeEdit.map((tile, index) => {
-                    return <div className={`tile ${tile}`} key={index}></div>
+                  {this.state.activeEdit.map((tile, index, arr) => {
+                    if (index) {
+                      return (
+                        <div
+                          className={`tile ${tile} ${this.state.confirmDelete === index ? 'tile--delete' : ''}`}
+                          key={index}
+                          onClick={() => this.onEditClick(index)}
+                        ></div>
+                      );
+                    } else if (arr.length === 1) {
+                      return <div>No tiles</div>;
+                    }
                   })}
                 </div>
               </div>
+              <div style={{ visibility: !!this.state.confirmDelete ? 'visible' : 'hidden' }}>Are you sure?</div>
+              <h4>Select tiles you wish to remove</h4>
               <div className='edit-tiles--buttons'>
-                <div className='edit-tiles--button'>
+                <div className='edit-tiles--button'
+                  onClick={() => this.onEditSave()}
+                >
                   Save
                 </div>
                 <div className='edit-tiles--button'
-                  onClick={() => this.setState(() => ({ activeEdit: '' }))}
+                  onClick={() => this.setState(() => ({ activeEdit: '', confirmDelete: 0 }))}
                 >
                   Close
                 </div>
