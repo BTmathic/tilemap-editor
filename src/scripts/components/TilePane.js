@@ -22,9 +22,16 @@ export default (props) => (
   <div className='tile-pane'>
     <div className={`tile-pane--visible ${props.tilesOnPane}`}>
       {tiles.map((tileClass) => {
-        return <Tile tileClass={tileClass} key={tileClass} tileType={'newTile'}
-          onTileClick={props.onTileClick}
-        />
+        return (
+          <Tile 
+            tileClass={tileClass}
+            borderToggle={props.borderToggle}
+            key={tileClass}
+            tileType={'newTile'}
+            topLayer={true}
+            onTileClick={props.onTileClick}
+          />
+        );
       })}
     </div>
   </div>

@@ -2,9 +2,6 @@
   width: floor($width)
 }
 
-//$map-height: floor($vw*0.95/34);
-//$map-width: floor(@include mapWidth(13px)/34); // 67.77% of viewport width
-
 h1 {
   background-image: url('../../granite.png');
   background-repeat: repeat;
@@ -12,6 +9,16 @@ h1 {
   margin: 0;
   padding: 1rem;
   text-align: center;
+}
+
+.toggle-borders {
+  color: gold;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 0.3rem 0.8rem;
+  position: absolute;
+  right: 5%;
+  top: 5%;
 }
 
 .editor {
@@ -25,31 +32,29 @@ h1 {
     justify-content: space-around;
     .map-pane {
       background: black;
-      height: 543px;
+      height: 528px;
       max-height: 95vh;
       width: calc(95% - 300px);
       overflow: scroll;
       min-width: 600px;
-      //width: calc($map-width*34px);
-      //@include mapWidth($width);
       .map-pane--visible {
         display: flex;
         flex-wrap: wrap;
-        height: 1320px;
+        height: 1280px;
         position: relative;
-        width: 1320px;
+        width: 1280px;
       }
     }
     .tile-pane {
       background: black;
-      height: 543px;
+      height: 528px;
       overflow-x: scroll;
-      width: 272px;
+      width: 256px;
       .tile-pane--visible {
         display: flex;
         flex-wrap: wrap;
         position: relative;
-        width: 528px;
+        width: 513px;
       }
     }
   }
@@ -71,10 +76,12 @@ h1 {
         justify-content: space-evenly;
       }
       .tile {
-        border: 1px solid black;
+        outline: 1px solid black;
+        outline-offset: -1px;
       }
       .tile--delete {
-        border: 1px solid red;
+        outline: 1px solid red;
+        
       }
     }
     .edit-tiles--buttons {

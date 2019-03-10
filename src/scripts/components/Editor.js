@@ -6,6 +6,7 @@ export default class Editor extends React.Component {
   state = {
     activeEdit: '',
     activeTile: '',
+    borderToggle: true,
     confirmDelete: 0,
     drag: false,
     editTileIndex: '',
@@ -66,8 +67,7 @@ export default class Editor extends React.Component {
   // the tile deleted. Second click deletes the tile. None of this is binding
   // as the user must confirm saving the edits before the map is changed
   onEditClick = (index) => {
-    const deleteTile = !!this.state.confirmDelete;
-    if (deleteTile) {
+    if (this.state.confirmDelete == index) {
       const activeEdit = this.state.activeEdit;
       activeEdit.splice(index, 1);
       this.setState(() => ({ activeEdit, confirmDelete: 0 }));
@@ -82,6 +82,7 @@ export default class Editor extends React.Component {
     map[this.state.editTileIndex] = this.state.activeEdit;
     this.setState(() => ({
       activeEdit: '',
+      confirmDelete: 0,
       editTileIndex: '',
       map
     }));
@@ -99,7 +100,7 @@ export default class Editor extends React.Component {
     const mouseY = e.clientY - this.state.mapY + this.state.mapScrollOffsetY + this.state.pageScrollOffset;
     // console.log(e.clientY, this.state.mapY);
     // console.log(mouseY);
-    const tileIndex = Math.floor(mouseX / 33) + this.state.mapWidth * Math.floor(mouseY / 33);
+    const tileIndex = Math.floor(mouseX / 32) + this.state.mapWidth * Math.floor(mouseY / 32);
     if (this.state.drag) {
       if ( // mouse inside the MapPane DOM window, including scroll
           mouseX - this.state.mapScrollOffsetX > -1 &&
@@ -145,6 +146,10 @@ export default class Editor extends React.Component {
     }
   }
 
+  toggleBorders = () => {
+    this.setState((prevState) => ({ borderToggle: !prevState.borderToggle}));
+  }
+
   componentDidMount() {
     // add window resize listener as CSS changes but JS does not
     window.addEventListener('scroll', this.handleScroll);
@@ -159,6 +164,13 @@ export default class Editor extends React.Component {
       <div>
         <div>
           <h1>Tilemap Editor</h1>
+        </div>
+        <div
+          className='toggle-borders'
+          onClick={this.toggleBorders}
+          style={{ outline: `${this.state.borderToggle ? '2px' : '0'} solid gray` }}
+        >
+          Borders
         </div>
         <div className='editor' onMouseMove={this.onMouseMove}>
           {
@@ -206,19 +218,26 @@ export default class Editor extends React.Component {
                 style={{
                   position: 'absolute',
                   left: this.state.mouseX,
+                  outline: '1px solid gray',
+                  outlineOffset: '-1px',
                   top: this.state.mouseY,
-                  zIndex: 10
-                }}
+              zIndex: 10
+            }}
                 onClick={(e) => { this.onMapClick(e, 1) }}
               >
               </div>
             </div>
           }
           <div className='editor--fixed'>
-            <TilePane onTileClick={this.onTileClick} tilesOnPane={this.state.tilesOnPane} />
+            <TilePane
+              borderToggle={true}
+              onTileClick={this.onTileClick}
+              tilesOnPane={this.state.tilesOnPane}
+            />
             <MapPane
               loadMapPosition={this.loadMapPosition}
               activeTile={this.state.activeTile}
+              borderToggle={this.state.borderToggle}
               map={this.state.map}
               tilesOnPane={this.state.tilesOnPane}
               onMapClick={this.onMapClick}

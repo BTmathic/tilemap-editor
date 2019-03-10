@@ -1,6 +1,4 @@
 .blank {
-  border-top: 1px solid gray;
-  border-left: 1px solid gray;
   height: 32px;
   width: 32px;
 }
@@ -23,9 +21,9 @@
   .tile1400, .tile1401, .tile1402, .tile1403, .tile1404, .tile1405, .tile1406, .tile1407, .tile1408, .tile1409, .tile1410, .tile1411, .tile1412, .tile1413, .tile1414, .tile1415,
   .tile1500, .tile1501, .tile1502, .tile1503, .tile1504, .tile1505, .tile1506, .tile1507, .tile1508, .tile1509, .tile1510, .tile1511, .tile1512, .tile1513, .tile1514, .tile1515 {
     background-image: url('../../tiles/Castle2.png');
-    border-top: 1px solid gray;
-    border-left: 1px solid gray;
     height: 32px;
+    outline: 1px solid gray;
+    outline-offset: -1px;
     width: 32px;
   }
 }

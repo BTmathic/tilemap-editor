@@ -4,8 +4,9 @@ export default (props) => (
   <div className={`tile ${props.tileClass} ${props.tileType === 'map' ? 'map-tile' : ''}`}
     // change 41 to width and height + 1
     style={{
-      left: props.index * (32 + 1) % (40 * (32 + 1)) ? props.index * (32 + 1) % (40 * (32 + 1)) : 0,
-      top: (32 + 1) * Math.floor(props.index / 40) ? (32 + 1) * Math.floor(props.index / 40) : 0,
+      left: props.index*32 % (40*32) ? props.index*32 % (40*32) : 0,
+      outline: `${props.borderToggle && props.topLayer ? '1px' : '0'} solid gray`,
+      top: 32*Math.floor(props.index / 40) ? 32*Math.floor(props.index / 40) : 0,
       zIndex: props.layer
     }}
     onClick={(e) => {
