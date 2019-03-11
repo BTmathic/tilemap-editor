@@ -1,0 +1,21 @@
+.map-settings{
+  .map-settings__menu {
+    background: darken(gray, 10%);
+    height: 45vh;
+    left: 5%;
+    padding: 1rem;
+    position: absolute;
+    width: 20%;
+    z-index: 10;
+    .map-settings--dimensions {
+      display: flex;
+      justify-content: space-evenly;
+    }
+    .map-settings--add-row {
+      padding: 1rem;
+    }
+    .map-settings--add-column {
+      padding: 1rem;
+    }
+  }
+}

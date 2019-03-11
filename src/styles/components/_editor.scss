@@ -2,127 +2,132 @@
   width: floor($width)
 }
 
-h1 {
+.editor-page {
   background-image: url('../../granite.png');
   background-repeat: repeat;
-  color: gold;
-  margin: 0;
-  padding: 1rem;
-  text-align: center;
-}
-
-.toggle-borders {
-  color: gold;
-  cursor: pointer;
-  font-weight: bold;
-  padding: 0.3rem 0.8rem;
-  position: absolute;
-  right: 5%;
-  top: 5%;
-}
-
-.editor {
-  background-image: url('../../granite.png');
-  background-repeat: repeat;
-  padding-top: 2vh;
-  height: 98vh;
-  .editor--fixed {
-    align-items: center;
-    display: flex;
-    justify-content: space-around;
-    .map-pane {
-      background: black;
-      height: 528px;
-      max-height: 95vh;
-      width: calc(95% - 300px);
-      overflow: scroll;
-      min-width: 600px;
-      .map-pane--visible {
-        display: flex;
-        flex-wrap: wrap;
-        height: 1280px;
-        position: relative;
-        width: 1280px;
-      }
-    }
-    .tile-pane {
-      background: black;
-      height: 528px;
-      overflow-x: scroll;
-      width: 256px;
-      .tile-pane--visible {
-        display: flex;
-        flex-wrap: wrap;
-        position: relative;
-        width: 513px;
-      }
-    }
+  height: 100vh;
+  h1 {
+    color: gold;
+    margin: 0;
+    padding: 1rem;
+    text-align: center;
   }
-  .edit-tiles {
-    background: grey;
-    border: 3px solid darken(gold, 15%);
-    color: darken(white, 5%);
-    height: 272px;
-    left: 1.5%;
+  .map-settings__button, .toggle-borders {
+    color: gold;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0.3rem 0.8rem;
     position: absolute;
-    text-align: center;
-    top: 10vh;
-    width: 300px;
-    z-index: 10;
-    .edit-tile__tiles {
-      padding: 1rem;
-      .castle {
-        display: flex;
-        justify-content: space-evenly;
-      }
-      .tile {
-        outline: 1px solid black;
-        outline-offset: -1px;
-      }
-      .tile--delete {
-        outline: 1px solid red;
-        
-      }
-    }
-    .edit-tiles--buttons {
-      display: flex;
-      justify-content: space-evenly;
-      margin: 0 auto;
-      width: 80%;
-      .edit-tiles--button {
-        background: blue;
-        border-radius: 5px;
-        cursor: pointer;
-        padding: 0.5rem;
-        width: 30%;
-      }
-    }
+    top: 5%;
   }
-  .map-dimensions {
-    background: grey;
-    height: 50px;
-    margin: 16px auto;
-    text-align: center;
-    width: 33%;
-    form {
+  .map-settings__button {
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 5px;
+    left: 5%;
+  }
+  .toggle-borders {
+    right: 5%;
+  }
+  .editor {
+    margin-top: 2vh;
+    .editor--fixed {
+      align-items: center;
       display: flex;
       justify-content: space-around;
-      padding: 0.2rem 0;
-      label {
-        padding: 0.2rem 0 0;
+      .map-pane {
+        background: black;
+        height: 528px;
+        max-height: 95vh;
+        width: calc(95% - 300px);
+        overflow: scroll;
+        min-width: 600px;
+        .map-pane--visible {
+          display: flex;
+          flex-wrap: wrap;
+          height: 1280px;
+          position: relative;
+          width: 1280px;
+        }
       }
-      input {
-        margin: 0 1rem;
-        width: 30%;
+      .tile-pane {
+        background: black;
+        height: 528px;
+        overflow-x: scroll;
+        width: 256px;
+        .tile-pane--visible {
+          display: flex;
+          flex-wrap: wrap;
+          position: relative;
+          width: 513px;
+        }
       }
     }
-  }
-  .tile {
-    cursor: pointer;
-    height: 32px;
-    width: 32px;
-  }
-  .map-tile {
-    position: absolute;
+    .edit-tiles {
+      background: grey;
+      border: 3px solid darken(gold, 15%);
+      color: darken(white, 5%);
+      height: 272px;
+      left: 1.5%;
+      position: absolute;
+      text-align: center;
+      top: 10vh;
+      width: 300px;
+      z-index: 10;
+      .edit-tile__tiles {
+        padding: 1rem;
+        .castle {
+          display: flex;
+          justify-content: space-evenly;
+        }
+        .tile {
+          outline: 1px solid black;
+          outline-offset: -1px;
+        }
+        .tile--delete {
+          outline: 1px solid red;
+          
+        }
+      }
+      .edit-tiles--buttons {
+        display: flex;
+        justify-content: space-evenly;
+        margin: 0 auto;
+        width: 80%;
+        .edit-tiles--button {
+          background: blue;
+          border-radius: 5px;
+          cursor: pointer;
+          padding: 0.5rem;
+          width: 30%;
+        }
+      }
+    }
+    .map-dimensions {
+      background: grey;
+      height: 50px;
+      margin: 16px auto;
+      text-align: center;
+      width: 33%;
+      form {
+        display: flex;
+        justify-content: space-around;
+        padding: 0.2rem 0;
+        label {
+          padding: 0.2rem 0 0;
+        }
+        input {
+          margin: 0 1rem;
+          width: 30%;
+        }
+      }
+    }
+    .tile {
+      cursor: pointer;
+      height: 32px;
+      width: 32px;
+    }
+    .map-tile {
+      position: absolute;
+    }
   }
 }

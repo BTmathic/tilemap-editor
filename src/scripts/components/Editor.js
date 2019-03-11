@@ -1,6 +1,7 @@
 import React from 'react';
 import TilePane from './TilePane';
 import MapPane from './MapPane';
+import MapSettings from './MapSettings';
 
 export default class Editor extends React.Component {
   state = {
@@ -161,10 +162,11 @@ export default class Editor extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className='editor-page'>
         <div>
           <h1>Tilemap Editor</h1>
         </div>
+        <MapSettings />
         <div
           className='toggle-borders'
           onClick={this.toggleBorders}
@@ -242,18 +244,6 @@ export default class Editor extends React.Component {
               tilesOnPane={this.state.tilesOnPane}
               onMapClick={this.onMapClick}
             />
-          </div>
-          <div className='map-dimensions'>Map Dimensions
-            <form>
-              <div>
-                <label>Height:</label>
-                <input name='Height: ' type='number' value={this.state.mapHeight} onChange={this.changeMapHeight} />
-              </div>
-              <div>
-                <label>Width:</label>
-                <input name='Width: ' type='number' value={this.state.mapWidth} onChange={this.changeMapWidth} />
-              </div>
-            </form>
           </div>
         </div>
       </div>
