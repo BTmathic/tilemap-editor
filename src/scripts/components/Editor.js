@@ -12,7 +12,7 @@ export default class Editor extends React.Component {
     drag: false,
     editTileIndex: '',
     mapHeight: 40,
-    map: Array(1600).fill(['blank']),
+    map: Array(40).fill(null).map((row) => Array(40).fill(['blank'])),
     mapDOMHeight: 0,
     mapDOMWidth: 0,
     mapScrollOffsetX: 0,
@@ -99,27 +99,26 @@ export default class Editor extends React.Component {
     const map = this.state.map;
     const mouseX = e.clientX - this.state.mapX + this.state.mapScrollOffsetX;
     const mouseY = e.clientY - this.state.mapY + this.state.mapScrollOffsetY + this.state.pageScrollOffset;
-    // console.log(e.clientY, this.state.mapY);
-    // console.log(mouseY);
-    const tileIndex = Math.floor(mouseX / 32) + this.state.mapWidth * Math.floor(mouseY / 32);
+    const tileColumnIndex = Math.floor(mouseX/32);
+    const tileRowIndex = Math.floor(mouseY/32);
     if (this.state.drag) {
       if ( // mouse inside the MapPane DOM window, including scroll
           mouseX - this.state.mapScrollOffsetX > -1 &&
           mouseX - this.state.mapScrollOffsetX < this.state.mapDOMWidth &&
           mouseY > 0 &&
           mouseY - this.state.mapScrollOffsetY < this.state.mapDOMHeight &&
-          tileIndex > -1 &&
-          tileIndex < map.length &&
-          map[tileIndex].length < 8 // we do not want to allow pointlessly adding tile after tile after tile
+          tileColumnIndex > -1 && tileRowIndex > -1 &&
+          tileColumnIndex < map[0].length && tileRowIndex < map.length &&
+          map[tileRowIndex][tileColumnIndex].length < 8 // we do not want to allow pointlessly adding tile after tile after tile
       ) {
-        map[tileIndex] = map[tileIndex].concat(this.state.activeTile);
+        map[tileRowIndex][tileColumnIndex] = map[tileRowIndex][tileColumnIndex].concat(this.state.activeTile);
         this.setState(() => ({ map }));
       } else { // mouse outside MapPaneDOM
         this.setState(() => ({ activeTile: '', drag: false }));
       }
     } else { // clicking on the map loads a popup with each layer tile to edit
       this.setState(() => ({
-        activeEdit: map[tileIndex].slice(),
+        activeEdit: map[tileRowIndex][tileColumnIndex].slice(),
         editTileIndex: tileIndex
       }));
     }

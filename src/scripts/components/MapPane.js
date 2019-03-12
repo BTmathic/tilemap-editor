@@ -27,25 +27,29 @@ export default class MapPane extends React.Component {
     return (
       <div className='map-pane' onScroll={this.handleScroll} ref={(mapPane) => this.mapPane = mapPane}>
         <div className={`map-pane--visible ${this.props.tilesOnPane}`}>
-          {this.props.map.map((tileClasses, index) => {
-            return (
-              tileClasses.map((tileClass, layer, arr) => {
-                const layers = arr.length - 1;
-                return (
-                  <Tile
-                    tileClass={tileClass}
-                    borderToggle={this.props.borderToggle}
-                    index={index}
-                    key={tileClass + index + layer}
-                    layer={layer}
-                    topLayer={layers === layer}
-                    tileType={'map'}
-                    onMapClick={this.props.onMapClick}
-                  />
-                );
-            })
-          );
-        })}
+          {
+            this.props.map.map((mapRow, rowIndex) => {
+              return (
+                mapRow.map((tileClasses, columnIndex) => {
+                return tileClasses.map((tileClass, layer, arr) => {
+                  const layers = arr.length - 1;
+                  return (
+                    <Tile
+                      tileClass={tileClass}
+                      borderToggle={this.props.borderToggle}
+                      column={columnIndex}
+                      key={tileClass + rowIndex + layer}
+                      layer={layer}
+                      row={rowIndex}
+                      topLayer={layers === layer}
+                      tileType={'map'}
+                      onMapClick={this.props.onMapClick}
+                    />
+                  );
+                });
+              })
+            );
+          })}
         </div>
       </div>
     );
