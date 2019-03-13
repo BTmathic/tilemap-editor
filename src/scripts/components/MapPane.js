@@ -40,6 +40,7 @@ export default class MapPane extends React.Component {
                       column={columnIndex}
                       key={tileClass + rowIndex + layer}
                       layer={layer}
+                      mapWidth={this.props.mapWidth}
                       row={rowIndex}
                       topLayer={layers === layer}
                       tileType={'map'}

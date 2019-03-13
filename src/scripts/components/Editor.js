@@ -10,7 +10,8 @@ export default class Editor extends React.Component {
     borderToggle: true,
     confirmDelete: 0,
     drag: false,
-    editTileIndex: '',
+    editTileColumnIndex: '',
+    editTileRowIndex: '',
     mapHeight: 40,
     map: Array(40).fill(null).map((row) => Array(40).fill(['blank'])),
     mapDOMHeight: 0,
@@ -24,25 +25,12 @@ export default class Editor extends React.Component {
     tilesOnPane: 'castle'
   }
 
-  // change these two functions to a single one that fires with a submit 
-  // button so we can caution before removing non-empty tiles
-  changeMapHeight = (e) => {
-    const mapHeight = e.currentTarget.value;
-    let newMap = this.state.map;
-    if (mapHeight > this.state.mapHeight) {
-      for (let i = 0; i < mapHeight * this.state.mapWidth; i++) {
-        newMap.push('blank');
-      }
-    } else {
-      newMap = this.state.map.slice(0, mapHeight*this.state.mapWidth);
-    }
-    this.setState(() => ({ mapHeight, map: newMap }));
-  }
-
-  // change array as well, but do so carefully so as to not delete content (if possible)
-  changeMapWidth = (e) => {
-    const mapWidth = e.currentTarget.value;
-    this.setState(() => ({ mapWidth }));
+  changeMap = (map, mapHeight, mapWidth) => {
+    this.setState(() => ({ 
+      map,
+      mapHeight,
+      mapWidth
+     }));
   }
 
   handleScroll = () => {
@@ -52,7 +40,6 @@ export default class Editor extends React.Component {
 
   // Get position of mapPane on the window
   loadMapPosition = (mapDOMHeight, mapDOMWidth, mapScrollLeft, mapScrollTop, mapTopLeftX, mapTopLeftY) => {
-    console.log(mapTopLeftY, window.scrollY, this.state.pageScrollOffset);
     this.setState(() => ({
       mapDOMHeight,
       mapDOMWidth,
@@ -80,11 +67,12 @@ export default class Editor extends React.Component {
   // Save the current edit to a tile onto the map
   onEditSave = () => {
     const map = this.state.map;
-    map[this.state.editTileIndex] = this.state.activeEdit;
+    map[this.state.editTileRowIndex][this.state.editTileColumnIndex] = this.state.activeEdit;
     this.setState(() => ({
       activeEdit: '',
       confirmDelete: 0,
-      editTileIndex: '',
+      editTileColumnIndex: '',
+      editTileRowIndex: '',
       map
     }));
   }
@@ -119,7 +107,8 @@ export default class Editor extends React.Component {
     } else { // clicking on the map loads a popup with each layer tile to edit
       this.setState(() => ({
         activeEdit: map[tileRowIndex][tileColumnIndex].slice(),
-        editTileIndex: tileIndex
+        editTileColumnIndex: tileColumnIndex,
+        editTileRowIndex: tileRowIndex
       }));
     }
   }
@@ -165,7 +154,12 @@ export default class Editor extends React.Component {
         <div>
           <h1>Tilemap Editor</h1>
         </div>
-        <MapSettings />
+        <MapSettings 
+          changeMap={this.changeMap}
+          map={this.state.map}
+          mapHeight={this.state.mapHeight}
+          mapWidth={this.state.mapWidth}
+        />
         <div
           className='toggle-borders'
           onClick={this.toggleBorders}
@@ -240,6 +234,7 @@ export default class Editor extends React.Component {
               activeTile={this.state.activeTile}
               borderToggle={this.state.borderToggle}
               map={this.state.map}
+              mapWidth={this.state.mapWidth}
               tilesOnPane={this.state.tilesOnPane}
               onMapClick={this.onMapClick}
             />

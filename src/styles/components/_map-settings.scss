@@ -1,7 +1,6 @@
 .map-settings{
   .map-settings__menu {
     background: darken(gray, 10%);
-    height: 45vh;
     left: 5%;
     padding: 1rem;
     position: absolute;
@@ -11,11 +10,21 @@
       display: flex;
       justify-content: space-evenly;
     }
-    .map-settings--add-row {
+    .map-settings--change-map {
       padding: 1rem;
+      .map-settings--row, .map-settings--column {
+        cursor: pointer;
+      }
     }
-    .map-settings--add-column {
-      padding: 1rem;
+    .map-settings--close {
+      display: flex;
+      justify-content: space-evenly;
+      .map-settings--button {
+        background: white;
+        border-radius: 5px;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+      }
     }
   }
 }
