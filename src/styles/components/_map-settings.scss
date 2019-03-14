@@ -4,16 +4,27 @@
     left: 5%;
     padding: 1rem;
     position: absolute;
-    width: 20%;
+    text-align: center;
     z-index: 10;
     .map-settings--dimensions {
       display: flex;
       justify-content: space-evenly;
     }
     .map-settings--change-map {
-      padding: 1rem;
+      padding: .5rem;
       .map-settings--row, .map-settings--column {
         cursor: pointer;
+      }
+      div:hover {
+        font-weight: bold;
+      }
+      .map-settings--bold-padding {
+        font-weight: bold;
+        visibility: hidden;
+      }
+      input {
+        margin: 0.2rem 0.5rem;
+        width: 40px;
       }
     }
     .map-settings--close {

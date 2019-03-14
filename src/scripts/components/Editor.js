@@ -12,13 +12,10 @@ export default class Editor extends React.Component {
     drag: false,
     editTileColumnIndex: '',
     editTileRowIndex: '',
-    mapHeight: 40,
-    map: Array(40).fill(null).map((row) => Array(40).fill(['blank'])),
     mapDOMHeight: 0,
     mapDOMWidth: 0,
     mapScrollOffsetX: 0,
     mapScrollOffsetY: 0,
-    mapWidth: 40,
     mouseX: 0,
     mouseY: 0,
     pageScrollOffset: window.scrollY,
@@ -30,7 +27,7 @@ export default class Editor extends React.Component {
       map,
       mapHeight,
       mapWidth
-     }));
+     }), this.storeMap);
   }
 
   handleScroll = () => {
@@ -74,7 +71,7 @@ export default class Editor extends React.Component {
       editTileColumnIndex: '',
       editTileRowIndex: '',
       map
-    }));
+    }), this.storeMap);
   }
 
   // This function has two main parts, either clicking on the MapPane or elsewhere
@@ -83,24 +80,24 @@ export default class Editor extends React.Component {
   // a tile, clicking brings up the placed tiles to allow deleting, if there are any.
   // Otherwise, clicking outside the map removes the active tile from being dragged.
   onMapClick = (e, layer) => {
-    e.persist();
     const map = this.state.map;
     const mouseX = e.clientX - this.state.mapX + this.state.mapScrollOffsetX;
     const mouseY = e.clientY - this.state.mapY + this.state.mapScrollOffsetY + this.state.pageScrollOffset;
     const tileColumnIndex = Math.floor(mouseX/32);
     const tileRowIndex = Math.floor(mouseY/32);
+    e.persist();
     if (this.state.drag) {
       if ( // mouse inside the MapPane DOM window, including scroll
-          mouseX - this.state.mapScrollOffsetX > -1 &&
-          mouseX - this.state.mapScrollOffsetX < this.state.mapDOMWidth &&
-          mouseY > 0 &&
-          mouseY - this.state.mapScrollOffsetY < this.state.mapDOMHeight &&
-          tileColumnIndex > -1 && tileRowIndex > -1 &&
-          tileColumnIndex < map[0].length && tileRowIndex < map.length &&
-          map[tileRowIndex][tileColumnIndex].length < 8 // we do not want to allow pointlessly adding tile after tile after tile
+        mouseX - this.state.mapScrollOffsetX > -1 &&
+        mouseX - this.state.mapScrollOffsetX < this.state.mapDOMWidth &&
+        mouseY > 0 &&
+        mouseY - this.state.mapScrollOffsetY < this.state.mapDOMHeight &&
+        tileColumnIndex > -1 && tileRowIndex > -1 &&
+        tileColumnIndex < map[0].length && tileRowIndex < map.length &&
+        map[tileRowIndex][tileColumnIndex].length < 8 // we do not want to allow pointlessly adding tile after tile after tile
       ) {
         map[tileRowIndex][tileColumnIndex] = map[tileRowIndex][tileColumnIndex].concat(this.state.activeTile);
-        this.setState(() => ({ map }));
+        this.setState(() => ({ map }), this.storeMap);
       } else { // mouse outside MapPaneDOM
         this.setState(() => ({ activeTile: '', drag: false }));
       }
@@ -135,6 +132,11 @@ export default class Editor extends React.Component {
     }
   }
 
+  storeMap = () => {
+    // save map changes locally
+    localStorage.setItem('map', JSON.stringify(this.state.map));
+  }
+
   toggleBorders = () => {
     this.setState((prevState) => ({ borderToggle: !prevState.borderToggle}));
   }
@@ -142,6 +144,17 @@ export default class Editor extends React.Component {
   componentDidMount() {
     // add window resize listener as CSS changes but JS does not
     window.addEventListener('scroll', this.handleScroll);
+  }
+
+  componentWillMount() {
+    const initialMap = Array(40).fill(null).map((row) => Array(40).fill(['blank']));
+    const loadMap = localStorage.getItem('map');
+    console.log(JSON.parse(loadMap).length);
+    this.setState(() => ({
+      map: loadMap ? JSON.parse(loadMap) : initialMap,
+      mapHeight: loadMap ? JSON.parse(loadMap).length : 40,
+      mapWidth: loadMap ? JSON.parse(loadMap)[0].length : 40
+    }));
   }
 
   componentWillUnmount() {
