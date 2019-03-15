@@ -59,7 +59,7 @@ export default class MapSettings extends React.Component {
         map[i].splice(columnIndex, 1);
       }
       this.setState(() => ({ map }));
-      this.props.changeMap(map, this.props.mapHeight, this.props.mapWidth - 1)
+      this.props.changeMap(map, this.props.mapHeight, this.props.mapWidth - 1);
     }
   }
 
@@ -80,6 +80,12 @@ export default class MapSettings extends React.Component {
         settingsOpen: true
       }));
     }
+  }
+
+  resetMap = () => {
+    const map = Array(40).fill(null).map((row) => Array(40).fill(['blank']));
+    this.setState(() => ({ map }));
+    this.props.changeMap(map, map.length, map[0].length);
   }
 
   // We need to store a copy of the map before changes in case the user
@@ -171,6 +177,9 @@ export default class MapSettings extends React.Component {
               <div className='map-settings--button'
                 onClick={this.cancelUpdate}
               >Cancel</div>
+              <div className='map-settings--button'
+                onClick={this.resetMap}
+              >Reset</div>
             </div>
           </div>
         }

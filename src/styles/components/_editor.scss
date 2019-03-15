@@ -50,15 +50,39 @@
         }
       }
       .tile-pane {
-        background: black;
-        height: 528px;
-        overflow-x: scroll;
-        width: 256px;
-        .tile-pane--visible {
-          display: flex;
-          flex-wrap: wrap;
+        position: relative;
+        .tile-pane--tiles {
+          background: black;
+          height: 528px;
+          left: 1rem;
+          overflow-x: scroll;
           position: relative;
-          width: 513px;
+          width: 256px;
+          .tile-pane--visible {
+            display: flex;
+            flex-wrap: wrap;
+            position: relative;
+            width: 513px;
+          }
+        }
+        .tile-pane__menu {
+          display: flex;
+          flex-direction: row-reverse;
+          justify-content: flex-start;
+          left: -7.9rem;
+          position: absolute;
+          top: 7.7rem;
+          transform: rotate(-90deg);
+          .tile-pane--option {
+            border-radius: 10px 10px 0 0;
+            cursor: pointer;
+            font-weight: bold;
+            padding: .1rem 0.5rem;
+          }
+          :nth-child(1) { background: red; color: white; }
+          :nth-child(2) { background: blue; color: white; }
+          :nth-child(3) { background: gold; color: black; }
+          :nth-child(4) { background: green; color: black; }
         }
       }
     }
@@ -75,7 +99,7 @@
       z-index: 10;
       .edit-tile__tiles {
         padding: 1rem;
-        .castle {
+        .castle, .mountains, .woods, .path,  {
           display: flex;
           justify-content: space-evenly;
         }
@@ -97,8 +121,7 @@
           background: blue;
           border-radius: 5px;
           cursor: pointer;
-          padding: 0.5rem;
-          width: 30%;
+          padding: 0.5rem 1rem;
         }
       }
     }

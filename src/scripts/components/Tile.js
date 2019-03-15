@@ -2,7 +2,6 @@ import React from 'react';
 
 export default (props) => (
   <div className={`tile ${props.tileClass} ${props.tileType === 'map' ? 'map-tile' : ''}`}
-    // change 40 to width and height
     style={{
       left: props.column*32 % (props.mapWidth*32) ? props.column*32 % (props.mapWidth*32) : 0,
       outline: `${props.borderToggle && props.topLayer ? '1px' : '0'} solid gray`,

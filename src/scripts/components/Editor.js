@@ -1,4 +1,5 @@
 import React from 'react';
+import TileMenu from './TileMenu';
 import TilePane from './TilePane';
 import MapPane from './MapPane';
 import MapSettings from './MapSettings';
@@ -28,6 +29,10 @@ export default class Editor extends React.Component {
       mapHeight,
       mapWidth
      }), this.storeMap);
+  }
+
+  changeTiles = (tiles) => {
+    this.setState(() => ({ tilesOnPane: tiles}));
   }
 
   handleScroll = () => {
@@ -149,7 +154,6 @@ export default class Editor extends React.Component {
   componentWillMount() {
     const initialMap = Array(40).fill(null).map((row) => Array(40).fill(['blank']));
     const loadMap = localStorage.getItem('map');
-    console.log(JSON.parse(loadMap).length);
     this.setState(() => ({
       map: loadMap ? JSON.parse(loadMap) : initialMap,
       mapHeight: loadMap ? JSON.parse(loadMap).length : 40,
@@ -215,6 +219,11 @@ export default class Editor extends React.Component {
                 >
                   Close
                 </div>
+                <div className='edit-tiles--button'
+                  onClick={() => this.setState(() => ({ activeEdit: ['blank'] }))}
+                >
+                  Reset
+                </div>
               </div>
             </div>
           }
@@ -229,19 +238,22 @@ export default class Editor extends React.Component {
                   outline: '1px solid gray',
                   outlineOffset: '-1px',
                   top: this.state.mouseY,
-              zIndex: 10
-            }}
+                  zIndex: 10
+                }}
                 onClick={(e) => { this.onMapClick(e, 1) }}
               >
               </div>
             </div>
           }
           <div className='editor--fixed'>
-            <TilePane
-              borderToggle={true}
-              onTileClick={this.onTileClick}
-              tilesOnPane={this.state.tilesOnPane}
-            />
+            <div className='tile-pane'>
+              <TileMenu changeTiles={this.changeTiles} />
+              <TilePane
+                borderToggle={true}
+                onTileClick={this.onTileClick}
+                tilesOnPane={this.state.tilesOnPane}
+              />
+            </div>
             <MapPane
               loadMapPosition={this.loadMapPosition}
               activeTile={this.state.activeTile}

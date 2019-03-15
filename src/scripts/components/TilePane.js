@@ -19,11 +19,11 @@ const tiles = ['tile0000', 'tile0001', 'tile0002', 'tile0003', 'tile0004', 'tile
               'tile1500', 'tile1501', 'tile1502', 'tile1503', 'tile1504', 'tile1505', 'tile1506', 'tile1507', 'tile1508', 'tile1509', 'tile1510', 'tile1511', 'tile1512', 'tile1513', 'tile1514', 'tile1515',];
 
 export default (props) => (
-  <div className='tile-pane'>
+  <div className='tile-pane--tiles'>
     <div className={`tile-pane--visible ${props.tilesOnPane}`}>
       {tiles.map((tileClass) => {
         return (
-          <Tile 
+          <Tile
             tileClass={tileClass}
             borderToggle={props.borderToggle}
             key={tileClass}
