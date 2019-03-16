@@ -1,11 +1,12 @@
 {
   "name": "tilemap-editor",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "parcel src/index.html",
-    "build": "parcel build src/index.html --out-dir prod"
+    "build": "parcel build src/index.html --out-dir prod",
+    "start": "node server/server.js",
+    "heroku-postbuild": "yarn run build"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +16,7 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
+    "express": "^4.16.4",
     "normalize.css": "^8.0.1",
     "parcel-bundler": "^1.11.0",
     "react": "^16.7.0",
