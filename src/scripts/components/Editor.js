@@ -92,6 +92,7 @@ export default class Editor extends React.Component {
     const tileRowIndex = Math.floor(mouseY/32);
     e.persist();
     if (this.state.drag) {
+      const currentTile = map[tileRowIndex][tileColumnIndex];
       if ( // mouse inside the MapPane DOM window, including scroll
         mouseX - this.state.mapScrollOffsetX > -1 &&
         mouseX - this.state.mapScrollOffsetX < this.state.mapDOMWidth &&
@@ -99,8 +100,11 @@ export default class Editor extends React.Component {
         mouseY - this.state.mapScrollOffsetY < this.state.mapDOMHeight &&
         tileColumnIndex > -1 && tileRowIndex > -1 &&
         tileColumnIndex < map[0].length && tileRowIndex < map.length &&
-        map[tileRowIndex][tileColumnIndex].length < 8 // we do not want to allow pointlessly adding tile after tile after tile
+        currentTile.length < 8 // we do not want to allow pointlessly adding tile after tile after tile
       ) {
+        if (currentTile.length === 1) {
+          map[tileRowIndex][tileColumnIndex].type = this.state.tilesOnPane;
+        }
         map[tileRowIndex][tileColumnIndex] = map[tileRowIndex][tileColumnIndex].concat(this.state.activeTile);
         this.setState(() => ({ map }), this.storeMap);
       } else { // mouse outside MapPaneDOM
@@ -152,7 +156,12 @@ export default class Editor extends React.Component {
   }
 
   componentWillMount() {
-    const initialMap = Array(40).fill(null).map((row) => Array(40).fill(['blank']));
+    const initialMap = Array(40).fill(null).map((row) => {
+      return Array(40).fill([{
+        tile: '',
+        type: 'castle'
+      }]);
+    });
     const loadMap = localStorage.getItem('map');
     this.setState(() => ({
       map: loadMap ? JSON.parse(loadMap) : initialMap,
@@ -190,12 +199,12 @@ export default class Editor extends React.Component {
             <div className='edit-tiles'>
               <h2>Tiles</h2>
               <div className='edit-tile__tiles'>
-                <div className={this.state.tilesOnPane}>
+                <div>
                   {this.state.activeEdit.map((tile, index, arr) => {
                     if (index) {
                       return (
                         <div
-                          className={`tile ${tile} ${this.state.confirmDelete === index ? 'tile--delete' : ''}`}
+                          className={`tile ${arr[0]} ${tile.type} ${tile.tileClass} ${this.state.confirmDelete === index ? 'tile--delete' : ''}`}
                           key={index}
                           onClick={() => this.onEditClick(index)}
                         ></div>
@@ -229,9 +238,9 @@ export default class Editor extends React.Component {
           }
           {
             this.state.activeTile &&
-            <div className={this.state.tilesOnPane}>
+            <div>
               <div
-                className={`tile ${this.state.activeTile}`}
+                className={`tile ${this.state.activeTile.type} ${this.state.activeTile.tileClass}`}
                 style={{
                   position: 'absolute',
                   left: this.state.mouseX,
@@ -260,8 +269,8 @@ export default class Editor extends React.Component {
               borderToggle={this.state.borderToggle}
               map={this.state.map}
               mapWidth={this.state.mapWidth}
-              tilesOnPane={this.state.tilesOnPane}
               onMapClick={this.onMapClick}
+              tilesOnPane={this.state.tilesOnPane}
             />
           </div>
         </div>

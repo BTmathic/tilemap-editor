@@ -26,7 +26,7 @@ export default class MapPane extends React.Component {
   render() {
     return (
       <div className='map-pane' onScroll={this.handleScroll} ref={(mapPane) => this.mapPane = mapPane}>
-        <div className={`map-pane--visible ${this.props.tilesOnPane}`}>
+        <div className={`map-pane--visible`}>
           {
             this.props.map.map((mapRow, rowIndex) => {
               return (
@@ -35,7 +35,10 @@ export default class MapPane extends React.Component {
                   const layers = arr.length - 1;
                   return (
                     <Tile
-                      tileClass={tileClass}
+                      tile={{
+                        type: tileClass.type,
+                        tileClass: tileClass.tileClass
+                      }}
                       borderToggle={this.props.borderToggle}
                       column={columnIndex}
                       key={tileClass + rowIndex + layer}
