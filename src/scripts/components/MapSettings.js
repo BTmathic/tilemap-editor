@@ -73,17 +73,21 @@ export default class MapSettings extends React.Component {
   }
 
   openSettings = () => {
-    const oldMap = [...Array(this.props.mapHeight).keys()].map((row) => this.props.map[row].map(x => x));
     if (!this.state.settingsOpen) {
+      const oldMap = [...Array(this.props.mapHeight).keys()].map((row) => this.props.map[row].map(x => x));
       this.setState(() => ({
         oldMap,
         settingsOpen: true
       }));
+    } else {
+      const map = this.state.oldMap;
+      this.props.changeMap(map, map.length, map[0].length);
+      this.setState(() => ({ map, settingsOpen: false }));
     }
   }
 
   resetMap = () => {
-    const map = Array(40).fill(null).map((row) => Array(40).fill(['blank']));
+    const map = Array(50).fill(null).map((row) => Array(50).fill(['blank']));
     this.setState(() => ({ map }));
     this.props.changeMap(map, map.length, map[0].length);
   }

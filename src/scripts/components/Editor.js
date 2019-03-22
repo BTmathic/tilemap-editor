@@ -17,6 +17,8 @@ export default class Editor extends React.Component {
     mapDOMWidth: 0,
     mapScrollOffsetX: 0,
     mapScrollOffsetY: 0,
+    mapShiftLeft: 0,
+    mapShiftTop: 0,
     mouseX: 0,
     mouseY: 0,
     pageScrollOffset: window.scrollY,
@@ -41,12 +43,14 @@ export default class Editor extends React.Component {
   }
 
   // Get position of mapPane on the window
-  loadMapPosition = (mapDOMHeight, mapDOMWidth, mapScrollLeft, mapScrollTop, mapTopLeftX, mapTopLeftY) => {
+  loadMapPosition = (mapDOMHeight, mapDOMWidth, shiftLeft, shiftTop, mapTopLeftX, mapTopLeftY) => {
+    const mapShiftLeft = 32*shiftLeft;
+    const mapShiftTop = 32*shiftTop;
     this.setState(() => ({
       mapDOMHeight,
       mapDOMWidth,
-      mapScrollOffsetX: mapScrollLeft,
-      mapScrollOffsetY: mapScrollTop,
+      mapShiftLeft,
+      mapShiftTop,
       mapX: mapTopLeftX,
       mapY: mapTopLeftY
     }));
@@ -86,18 +90,18 @@ export default class Editor extends React.Component {
   // Otherwise, clicking outside the map removes the active tile from being dragged.
   onMapClick = (e, layer) => {
     const map = this.state.map;
-    const mouseX = e.clientX - this.state.mapX + this.state.mapScrollOffsetX;
-    const mouseY = e.clientY - this.state.mapY + this.state.mapScrollOffsetY + this.state.pageScrollOffset;
+    const mouseX = e.clientX - this.state.mapX + this.state.mapShiftLeft;
+    const mouseY = e.clientY - this.state.mapY + this.state.mapShiftTop + this.state.pageScrollOffset;
     const tileColumnIndex = Math.floor(mouseX/32);
     const tileRowIndex = Math.floor(mouseY/32);
     e.persist();
     if (this.state.drag) {
       const currentTile = map[tileRowIndex][tileColumnIndex];
       if ( // mouse inside the MapPane DOM window, including scroll
-        mouseX - this.state.mapScrollOffsetX > -1 &&
-        mouseX - this.state.mapScrollOffsetX < this.state.mapDOMWidth &&
+        mouseX - this.state.mapShiftLeft > -1 &&
+        mouseX - this.state.mapShiftLeft < this.state.mapDOMWidth &&
         mouseY > 0 &&
-        mouseY - this.state.mapScrollOffsetY < this.state.mapDOMHeight &&
+        mouseY - this.state.mapShiftTop < this.state.mapDOMHeight &&
         tileColumnIndex > -1 && tileRowIndex > -1 &&
         tileColumnIndex < map[0].length && tileRowIndex < map.length &&
         currentTile.length < 8 // we do not want to allow pointlessly adding tile after tile after tile
@@ -112,7 +116,7 @@ export default class Editor extends React.Component {
       }
     } else { // clicking on the map loads a popup with each layer tile to edit
       this.setState(() => ({
-        activeEdit: map[tileRowIndex][tileColumnIndex].slice(),
+        activeEdit: map[tileRowIndex][tileColumnIndex].slice(0),
         editTileColumnIndex: tileColumnIndex,
         editTileRowIndex: tileRowIndex
       }));
@@ -130,6 +134,8 @@ export default class Editor extends React.Component {
     }
   }
 
+  // When clicking on a tile on TilePane, we pickup the tile and drag
+  // it around to to be able to use it on MapPane
   onTileClick = (tile, mouseX, mouseY) => {
     if (!this.state.activeEdit) {
       this.setState(() => ({
@@ -141,8 +147,8 @@ export default class Editor extends React.Component {
     }
   }
 
+  // save map changes locally to not lose work accidentally
   storeMap = () => {
-    // save map changes locally
     localStorage.setItem('map', JSON.stringify(this.state.map));
   }
 
@@ -151,13 +157,12 @@ export default class Editor extends React.Component {
   }
 
   componentDidMount() {
-    // add window resize listener as CSS changes but JS does not
     window.addEventListener('scroll', this.handleScroll);
   }
 
   componentWillMount() {
-    const initialMap = Array(40).fill(null).map((row) => {
-      return Array(40).fill([{
+    const initialMap = Array(50).fill(null).map((row) => {
+      return Array(50).fill([{
         tile: '',
         type: 'castle'
       }]);
@@ -165,8 +170,8 @@ export default class Editor extends React.Component {
     const loadMap = localStorage.getItem('map');
     this.setState(() => ({
       map: loadMap ? JSON.parse(loadMap) : initialMap,
-      mapHeight: loadMap ? JSON.parse(loadMap).length : 40,
-      mapWidth: loadMap ? JSON.parse(loadMap)[0].length : 40
+      mapHeight: loadMap ? JSON.parse(loadMap).length : 50,
+      mapWidth: loadMap ? JSON.parse(loadMap)[0].length : 50
     }));
   }
 
@@ -215,7 +220,7 @@ export default class Editor extends React.Component {
                   })}
                 </div>
               </div>
-              <div style={{ visibility: !!this.state.confirmDelete ? 'visible' : 'hidden' }}>Are you sure?</div>
+              <div style={{ visibility: !!this.state.confirmDelete ? 'visible' : 'hidden' }}>Are you sure?<br/> Click again to delete</div>
               <h4>Select tiles you wish to remove</h4>
               <div className='edit-tiles--buttons'>
                 <div className='edit-tiles--button'
@@ -229,7 +234,7 @@ export default class Editor extends React.Component {
                   Close
                 </div>
                 <div className='edit-tiles--button'
-                  onClick={() => this.setState(() => ({ activeEdit: ['blank'] }))}
+                  onClick={() => this.setState(() => ({ activeEdit: [''] }))}
                 >
                   Reset
                 </div>
@@ -263,15 +268,18 @@ export default class Editor extends React.Component {
                 tilesOnPane={this.state.tilesOnPane}
               />
             </div>
-            <MapPane
-              loadMapPosition={this.loadMapPosition}
-              activeTile={this.state.activeTile}
-              borderToggle={this.state.borderToggle}
-              map={this.state.map}
-              mapWidth={this.state.mapWidth}
-              onMapClick={this.onMapClick}
-              tilesOnPane={this.state.tilesOnPane}
-            />
+            <div className='map-pane'>
+              <MapPane
+                loadMapPosition={this.loadMapPosition}
+                activeTile={this.state.activeTile}
+                borderToggle={this.state.borderToggle}
+                map={this.state.map}
+                mapHeight={this.state.mapHeight}
+                mapWidth={this.state.mapWidth}
+                onMapClick={this.onMapClick}
+                tilesOnPane={this.state.tilesOnPane}
+              />
+            </div>
           </div>
         </div>
       </div>
