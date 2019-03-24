@@ -85,7 +85,7 @@ export default class Editor extends React.Component {
     const tileRowIndex = Math.floor(mouseY/32);
     e.persist();
     if (this.state.drag) {
-      const currentTile = map[tileRowIndex][tileColumnIndex];
+      const currentTile = tileRowIndex > -1 ? map[tileRowIndex][tileColumnIndex] : null;
       if ( // mouse inside the MapPane DOM window, including scroll
         mouseX - this.state.mapShiftLeft > -1 &&
         mouseX - this.state.mapShiftLeft < this.state.mapDOMWidth &&

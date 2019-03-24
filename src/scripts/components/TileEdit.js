@@ -53,6 +53,15 @@ export default class TileEdit extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.activeEdit !== this.props.activeEdit) {
+      this.setState(() => ({
+        activeEdit: this.props.activeEdit,
+        confirmDelete: 0
+      }));
+    }
+  }
+
   render() {
     return (
       <div className='edit-tiles'>
