@@ -1,0 +1,59 @@
+.edit-tiles {
+  background: grey;
+  border: 3px solid darken(gold, 15%);
+  color: darken(white, 5%);
+  left: 1.5%;
+  padding-bottom: 1.5rem;
+  position: absolute;
+  text-align: center;
+  top: 10vh;
+  width: 300px;
+  z-index: 10;
+  .edit-tile__tiles {
+    padding: 1rem;
+    div  {
+      display: flex;
+      justify-content: space-evenly;
+    }
+    .tile {
+      outline: 1px solid black;
+      outline-offset: -1px;
+    }
+    .tile--delete {
+      outline: 1px solid red;
+      
+    }
+  }
+  .edit-tiles--buttons {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0 auto;
+    width: 80%;
+    .edit-tiles--button {
+      background: blue;
+      border-radius: 5px;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+    }
+  }
+  .edit-tiles__move {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 0 0 0.5rem;
+    div {
+      outline: 1px solid black;
+      outline-offset: -1px;
+    }
+    div:hover {
+      outline: 1px solid white;
+    }
+    .tile--no-move {
+      outline: 1px solid gray;
+      height: 32px;
+      width: 32px;
+    }
+    .tile--no-move:hover {
+      outline: 1px solid gray;
+    }
+  }
+}

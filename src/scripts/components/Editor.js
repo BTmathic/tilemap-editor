@@ -1,4 +1,5 @@
 import React from 'react';
+import TileEdit from './TileEdit';
 import TileMenu from './TileMenu';
 import TilePane from './TilePane';
 import MapPane from './MapPane';
@@ -9,7 +10,6 @@ export default class Editor extends React.Component {
     activeEdit: '',
     activeTile: '',
     borderToggle: true,
-    confirmDelete: 0,
     drag: false,
     editTileColumnIndex: '',
     editTileRowIndex: '',
@@ -31,6 +31,10 @@ export default class Editor extends React.Component {
       mapHeight,
       mapWidth
      }), this.storeMap);
+  }
+
+  handleTileEdit = (activeEdit) => {
+    this.setState(() => ({ activeEdit }));
   }
 
   changeTiles = (tiles) => {
@@ -56,27 +60,12 @@ export default class Editor extends React.Component {
     }));
   }
 
-  // Two step delete function to edit the layers of tiles on the map
-  // First click simply selects a tile and warns/asks to confirm user wants
-  // the tile deleted. Second click deletes the tile. None of this is binding
-  // as the user must confirm saving the edits before the map is changed
-  onEditClick = (index) => {
-    if (this.state.confirmDelete == index) {
-      const activeEdit = this.state.activeEdit;
-      activeEdit.splice(index, 1);
-      this.setState(() => ({ activeEdit, confirmDelete: 0 }));
-    } else {
-      this.setState(() => ({ confirmDelete: index}));
-    }
-  }
-
-  // Save the current edit to a tile onto the map
+  // Save the current edit of a tiles layers to the map
   onEditSave = () => {
     const map = this.state.map;
     map[this.state.editTileRowIndex][this.state.editTileColumnIndex] = this.state.activeEdit;
     this.setState(() => ({
       activeEdit: '',
-      confirmDelete: 0,
       editTileColumnIndex: '',
       editTileRowIndex: '',
       map
@@ -200,46 +189,15 @@ export default class Editor extends React.Component {
         </div>
         <div className='editor' onMouseMove={this.onMouseMove}>
           {
-            this.state.activeEdit &&
-            <div className='edit-tiles'>
-              <h2>Tiles</h2>
-              <div className='edit-tile__tiles'>
-                <div>
-                  {this.state.activeEdit.map((tile, index, arr) => {
-                    if (index) {
-                      return (
-                        <div
-                          className={`tile ${arr[0]} ${tile.type} ${tile.tileClass} ${this.state.confirmDelete === index ? 'tile--delete' : ''}`}
-                          key={index}
-                          onClick={() => this.onEditClick(index)}
-                        ></div>
-                      );
-                    } else if (arr.length === 1) {
-                      return <div>No tiles</div>;
-                    }
-                  })}
-                </div>
-              </div>
-              <div style={{ visibility: !!this.state.confirmDelete ? 'visible' : 'hidden' }}>Are you sure?<br/> Click again to delete</div>
-              <h4>Select tiles you wish to remove</h4>
-              <div className='edit-tiles--buttons'>
-                <div className='edit-tiles--button'
-                  onClick={() => this.onEditSave()}
-                >
-                  Save
-                </div>
-                <div className='edit-tiles--button'
-                  onClick={() => this.setState(() => ({ activeEdit: '', confirmDelete: 0 }))}
-                >
-                  Close
-                </div>
-                <div className='edit-tiles--button'
-                  onClick={() => this.setState(() => ({ activeEdit: [''] }))}
-                >
-                  Reset
-                </div>
-              </div>
-            </div>
+            this.state.activeEdit && 
+            <TileEdit
+              activeEdit={this.state.activeEdit}
+              confirmDelete={this.state.confirmDelete}
+              handleTileEdit={this.handleTileEdit}
+              onEditClick={this.onEditClick}
+              onEditSave={this.onEditSave}
+            />
+            
           }
           {
             this.state.activeTile &&
