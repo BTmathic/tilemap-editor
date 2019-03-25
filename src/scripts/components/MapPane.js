@@ -59,7 +59,7 @@ export default class MapPane extends React.Component {
           onClick={() => this.shiftMap(5, 0)}
           style={{
             left: coords ? coords.x + this.state.mapWidth/2 : 0,
-            top: coords ? coords.y + coords.height : 0
+            top: coords ? coords.y + this.state.mapHeight : 0
           }}
         ></div>
         <div className='map-scroll map-scroll-left'
