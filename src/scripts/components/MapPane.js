@@ -10,8 +10,9 @@ export default class MapPane extends React.Component {
   handleResize = () => {
     const coords = this.mapPane.getBoundingClientRect();
     const mapWidth = Math.min(Math.floor((window.innerWidth*0.95 - 380)/32)*32, 1600);
-    this.setState(() => ({ coords, mapWidth }), () => this.shiftMap(this.state.mapShiftTop, this.state.mapShiftLeft));
-    this.props.loadMapPosition(coords.height, mapWidth, this.state.mapShiftLeft, this.state.mapShiftTop, coords.x, coords.y + window.scrollY);
+    const mapHeight = Math.min(Math.floor((window.innerHeight*0.95 - 100)/32)*32, 1600);
+    this.setState(() => ({ coords, mapHeight, mapWidth }), () => this.shiftMap(this.state.mapShiftTop, this.state.mapShiftLeft));
+    this.props.loadMapPosition(mapHeight, mapWidth, this.state.mapShiftLeft, this.state.mapShiftTop, coords.x, coords.y + window.scrollY);
   }
 
   shiftMap = (vert, horiz) => {
@@ -70,7 +71,10 @@ export default class MapPane extends React.Component {
           style={{ left: coords ? coords.x + this.state.mapWidth + 20 : 0 }}
         ></div>
         <div className='map__display'
-          style={{ width: this.state.mapWidth }}
+          style={{
+            height: this.state.mapHeight,
+            width: this.state.mapWidth
+          }}
           ref={(mapPane) => this.mapPane = mapPane}>
           <div className={`map__display--visible`}>
             {

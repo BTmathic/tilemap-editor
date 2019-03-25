@@ -102,7 +102,8 @@ export default class TileEdit extends React.Component {
               })
             }
           </div>
-          { this.state.activeEdit.length > 3 && <div>Drag to move or click again to delete</div> }
+          { this.state.activeEdit.length > 2 && <div>Select where to move tile, or click again to delete</div> }
+          { this.state.activeEdit.length === 2 && <div>Click again to delete</div> }
         </div>
         <h4>Select tiles you wish to move or delete</h4>
         <div className='edit-tiles--buttons'>
