@@ -3,6 +3,7 @@ import TileEdit from './TileEdit';
 import TileMenu from './TileMenu';
 import TilePane from './TilePane';
 import MapPane from './MapPane';
+import MapView from './MapView';
 import MapSettings from './MapSettings';
 
 export default class Editor extends React.Component {
@@ -22,7 +23,8 @@ export default class Editor extends React.Component {
     mouseX: 0,
     mouseY: 0,
     pageScrollOffset: window.scrollY,
-    tilesOnPane: 'castle'
+    tilesOnPane: 'castle',
+    viewMap: false
   }
 
   changeMap = (map, mapHeight, mapWidth) => {
@@ -145,6 +147,10 @@ export default class Editor extends React.Component {
     this.setState((prevState) => ({ borderToggle: !prevState.borderToggle}));
   }
 
+  toggleFullMap = () => {
+    this.setState((prevState) => ({ viewMap: !prevState.viewMap }));
+  }
+
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
   }
@@ -180,6 +186,13 @@ export default class Editor extends React.Component {
           mapHeight={this.state.mapHeight}
           mapWidth={this.state.mapWidth}
         />
+        <div className='view-map-button' onClick={this.toggleFullMap}>
+          View Map
+        </div>
+        {
+          this.state.viewMap &&
+          <MapView map={this.state.map} toggleFullMap={this.toggleFullMap} />
+        }
         <div
           className='toggle-borders'
           onClick={this.toggleBorders}
