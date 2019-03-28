@@ -48,13 +48,15 @@ export default class Editor extends React.Component {
     this.setState(() => ({ pageScrollOffset }));
   }
 
-  // Get position of mapPane on the window
-  loadMapPosition = (mapDOMHeight, mapDOMWidth, shiftLeft, shiftTop, mapTopLeftX, mapTopLeftY) => {
+  // Get position of mapPane in the window
+  loadMapPosition = (coords, shiftLeft, shiftTop, mapTopLeftX, mapTopLeftY) => {
     const mapShiftLeft = 32*shiftLeft;
     const mapShiftTop = 32*shiftTop;
+    // const mapDOMWidth = Math.min(Math.floor((window.innerWidth * 0.95 - 380) / 32) * 32, 1600);
+    // const mapDOMHeight = Math.min(Math.floor((window.innerHeight * 0.95 - 100) / 32) * 32, 1600);
     this.setState(() => ({
-      mapDOMHeight,
-      mapDOMWidth,
+      mapDOMHeight: coords.height,
+      mapDOMWidth: coords.width,
       mapShiftLeft,
       mapShiftTop,
       mapX: mapTopLeftX,
@@ -82,7 +84,7 @@ export default class Editor extends React.Component {
   onMapClick = (e, layer) => {
     const map = this.state.map;
     const mouseX = e.clientX - this.state.mapX + this.state.mapShiftLeft;
-    const mouseY = e.clientY - this.state.mapY + this.state.mapShiftTop + this.state.pageScrollOffset;
+    const mouseY = e.clientY - this.state.mapY + this.state.mapShiftTop; // + this.state.pageScrollOffset;
     const tileColumnIndex = Math.floor(mouseX/32);
     const tileRowIndex = Math.floor(mouseY/32);
     e.persist();
@@ -103,6 +105,9 @@ export default class Editor extends React.Component {
         map[tileRowIndex][tileColumnIndex] = map[tileRowIndex][tileColumnIndex].concat(this.state.activeTile);
         this.setState(() => ({ map }), this.storeMap);
       } else { // mouse outside MapPaneDOM
+        console.log('mouseY', mouseY);
+        console.log('mapShiftTop', this.state.mapShiftTop);
+        console.log('mapDOMHeight', this.state.mapDOMHeight);
         this.setState(() => ({ activeTile: '', drag: false }));
       }
     } else { // clicking on the map loads a popup with each layer tile to edit
