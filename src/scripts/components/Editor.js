@@ -103,9 +103,6 @@ export default class Editor extends React.Component {
         map[tileRowIndex][tileColumnIndex] = map[tileRowIndex][tileColumnIndex].concat(this.state.activeTile);
         this.setState(() => ({ map }), this.storeMap);
       } else { // mouse outside MapPaneDOM
-        console.log('mouseY', mouseY);
-        console.log('mapShiftTop', this.state.mapShiftTop);
-        console.log('mapDOMHeight', this.state.mapDOMHeight);
         this.setState(() => ({ activeTile: '', drag: false }));
       }
     } else { // clicking on the map loads a popup with each layer tile to edit

@@ -1,27 +1,40 @@
 import React from 'react';
-//import domtoimage from 'dom-to-image';
+import html2canvas from 'html2canvas';
 import Tile from './Tile';
 
 export default class MapView extends React.Component {
   onSave = () => {
-    console.log('save!');
-    // domtoimage.toJpeg(this.map, { quality: 1 })
-    //   .then((dataUrl) => {
-    //     const link = document.createElement('a');
-    //     link.download = 'tilemap.jpeg';
-    //     link.href = dataUrl;
-    //     //link.click();
-    //   })
-    //   .catch((e) => {
-    //     console.log('Something went wrong', e)
-    //   });
+    html2canvas(this.map).then(canvas => {
+      this.saveAs(canvas.toDataURL(), 'tilemap.png');
+    }).catch((e) => {
+      console.log('Something went wrong', e);
+    });
+  }
+
+  saveAs = (uri, filename) => {
+    const link = document.createElement('a');
+    if (typeof link.download === 'string') {
+      link.href = uri;
+      link.download = filename;
+      document.body.appendChild(link); // Firefox requirement
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      window.open(uri);
+    }
   }
 
   render() {
     return (
       <div>
         <div className='map-view'>
-          <div ref={(map) => this.map = map} className='map-view--visible'>
+          <div ref={(map) => this.map = map}
+            className='map-view--visible'
+            style={{
+              height: this.props.map.length*32,
+              width: this.props.map[0].length*32
+            }}
+          >
             {
               this.props.map.map((mapRow, rowIndex) => {
                 return (
