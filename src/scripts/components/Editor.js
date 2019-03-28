@@ -49,14 +49,12 @@ export default class Editor extends React.Component {
   }
 
   // Get position of mapPane in the window
-  loadMapPosition = (coords, shiftLeft, shiftTop, mapTopLeftX, mapTopLeftY) => {
+  loadMapPosition = (mapDOMHeight, mapDOMWidth, shiftLeft, shiftTop, mapTopLeftX, mapTopLeftY) => {
     const mapShiftLeft = 32*shiftLeft;
     const mapShiftTop = 32*shiftTop;
-    // const mapDOMWidth = Math.min(Math.floor((window.innerWidth * 0.95 - 380) / 32) * 32, 1600);
-    // const mapDOMHeight = Math.min(Math.floor((window.innerHeight * 0.95 - 100) / 32) * 32, 1600);
     this.setState(() => ({
-      mapDOMHeight: coords.height,
-      mapDOMWidth: coords.width,
+      mapDOMHeight,
+      mapDOMWidth,
       mapShiftLeft,
       mapShiftTop,
       mapX: mapTopLeftX,
