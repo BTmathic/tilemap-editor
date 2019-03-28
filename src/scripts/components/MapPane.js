@@ -31,7 +31,7 @@ export default class MapPane extends React.Component {
     } else if (mapShiftTop + (15) > this.props.mapHeight) {
       mapShiftTop = this.props.mapHeight - (15);
     }
-    this.props.loadMapPosition(this.state.mapDOMHeight, this.state.mapDOMWidth, mapShiftLeft, mapShiftTop, this.state.coords.x, this.state.coords.y + window.scrollY)
+    this.props.loadMapPosition(this.state.mapHeight, this.state.mapWidth, mapShiftLeft, mapShiftTop, this.state.coords.x, this.state.coords.y + window.scrollY)
     this.setState(() => ({
       mapShiftLeft,
       mapShiftTop
