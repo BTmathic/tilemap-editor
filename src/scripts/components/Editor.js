@@ -79,13 +79,13 @@ export default class Editor extends React.Component {
   // layering one on top of another if consecutive tiles are placed. If not dragging
   // a tile, clicking brings up the placed tiles to allow deleting, if there are any.
   // Otherwise, clicking outside the map removes the active tile from being dragged.
-  onMapClick = (e, layer) => {
+  onMapClick = (e) => {
     const map = this.state.map;
     const mouseX = e.clientX - this.state.mapX + this.state.mapShiftLeft;
     const mouseY = e.clientY - this.state.mapY + this.state.mapShiftTop; // + this.state.pageScrollOffset;
     const tileColumnIndex = Math.floor(mouseX/32);
     const tileRowIndex = Math.floor(mouseY/32);
-    e.persist();
+    //e.persist();
     if (this.state.drag) {
       const currentTile = tileRowIndex > -1 ? map[tileRowIndex][tileColumnIndex] : null;
       if ( // mouse inside the MapPane DOM window, including scroll
@@ -97,20 +97,40 @@ export default class Editor extends React.Component {
         tileColumnIndex < map[0].length && tileRowIndex < map.length &&
         currentTile.length < 8 // we do not want to allow pointlessly adding tile after tile after tile
       ) {
-        if (currentTile.length === 1) {
-          map[tileRowIndex][tileColumnIndex].type = this.state.tilesOnPane;
+        const newTile = this.state.activeTile;
+        
+        const prevTile = currentTile.slice(-1)[0];
+        if (newTile.type !== prevTile.type || newTile.tileClass !== prevTile.tileClass) {
+          if (currentTile.length === 1) {
+            map[tileRowIndex][tileColumnIndex].type = this.state.tilesOnPane;
+          }
+          map[tileRowIndex][tileColumnIndex] = map[tileRowIndex][tileColumnIndex].concat(this.state.activeTile);
+          this.setState(() => ({ map }), this.storeMap);
         }
-        map[tileRowIndex][tileColumnIndex] = map[tileRowIndex][tileColumnIndex].concat(this.state.activeTile);
-        this.setState(() => ({ map }), this.storeMap);
       } else { // mouse outside MapPaneDOM
         this.setState(() => ({ activeTile: '', drag: false }));
       }
     } else { // clicking on the map loads a popup with each layer tile to edit
-      this.setState(() => ({
-        activeEdit: map[tileRowIndex][tileColumnIndex].slice(0),
-        editTileColumnIndex: tileColumnIndex,
-        editTileRowIndex: tileRowIndex
-      }));
+      if (tileRowIndex > -1 && tileColumnIndex > -1) {
+        this.setState(() => ({
+          activeEdit: map[tileRowIndex][tileColumnIndex].slice(0),
+          editTileColumnIndex: tileColumnIndex,
+          editTileRowIndex: tileRowIndex
+        }));
+      }
+      this.onMouseDrag(false);
+    }
+  }
+
+  onMouseDrag = (mouseDown) => {
+    this.setState(() => ({
+      mouseDown
+    }));
+  }
+
+  onMouseDragMove = (e) => {
+    if (this.state.mouseDown) {
+      this.onMapClick(e);
     }
   }
 
@@ -153,6 +173,7 @@ export default class Editor extends React.Component {
 
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener('mousemove', this.onMouseDragMove);
   }
 
   componentWillMount() {
@@ -172,6 +193,7 @@ export default class Editor extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('mousemove', this.onMouseDragMove);
   }
 
   render() {
@@ -226,6 +248,8 @@ export default class Editor extends React.Component {
                   zIndex: 10
                 }}
                 onClick={(e) => { this.onMapClick(e, 1) }}
+                onMouseDown={() => this.onMouseDrag(true)}
+                onMouseUp={() => this.onMouseDrag(false)}
               >
               </div>
             </div>

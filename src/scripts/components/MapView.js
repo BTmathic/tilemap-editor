@@ -137,10 +137,8 @@ export default class MapView extends React.Component {
           <canvas id='canvas'
             style={{
               background: 'black',
-              height: '1760px',
               position: 'relative',
               top: '100vh',
-              width: '1600px',
               zIndex: 20
             }}>
           </canvas>

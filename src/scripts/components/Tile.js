@@ -12,7 +12,7 @@ export default (props) => (
       if (props.tileType === 'newTile') {
         props.onTileClick(props.tile, e.clientX - 25, e.clientY - 25);
       } else if (props.tileType === 'map') {
-        props.onMapClick(e, props.layer);
+        props.onMapClick(e);
       }
     }}
   >

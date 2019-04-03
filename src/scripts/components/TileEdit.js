@@ -93,7 +93,7 @@ export default class TileEdit extends React.Component {
                   <div
                     className={
                       index !== this.state.index - 1 && index !== this.state.index
-                      ? `tile` : 'tile--no-move'
+                      ? `tile tile--move-img` : 'tile--no-move'
                     }
                     key={index}
                     onClick={() => this.onMoveClick(index)}
