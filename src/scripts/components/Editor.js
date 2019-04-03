@@ -111,7 +111,10 @@ export default class Editor extends React.Component {
         this.setState(() => ({ activeTile: '', drag: false }));
       }
     } else { // clicking on the map loads a popup with each layer tile to edit
-      if (tileRowIndex > -1 && tileColumnIndex > -1) {
+      if (tileRowIndex > -1 && tileColumnIndex > -1 && tileColumnIndex < map[0].length && tileRowIndex < map.length
+        && mouseX - this.state.mapShiftLeft < this.state.mapDOMWidth &&
+        mouseY - this.state.mapShiftTop < this.state.mapDOMHeight
+      ) {
         this.setState(() => ({
           activeEdit: map[tileRowIndex][tileColumnIndex].slice(0),
           editTileColumnIndex: tileColumnIndex,
