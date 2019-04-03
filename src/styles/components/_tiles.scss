@@ -1,3 +1,13 @@
+.tile {
+  cursor: pointer;
+  height: 32px;
+  width: 32px;
+}
+
+.map-tile {
+  position: absolute;
+}
+
 .castle { background-image: url('../../tiles/castle.png'); }
 .mountains { background-image: url('../../tiles/mountain.png'); }
 .woods { background-image: url('../../tiles/woods.png'); }
@@ -21,29 +31,27 @@
 .tile1300, .tile1301, .tile1302, .tile1303, .tile1304, .tile1305, .tile1306, .tile1307, .tile1308, .tile1309, .tile1310, .tile1311, .tile1312, .tile1313, .tile1314, .tile1315,
 .tile1400, .tile1401, .tile1402, .tile1403, .tile1404, .tile1405, .tile1406, .tile1407, .tile1408, .tile1409, .tile1410, .tile1411, .tile1412, .tile1413, .tile1414, .tile1415,
 .tile1500, .tile1501, .tile1502, .tile1503, .tile1504, .tile1505, .tile1506, .tile1507, .tile1508, .tile1509, .tile1510, .tile1511, .tile1512, .tile1513, .tile1514, .tile1515 {
-  height: 32px;
   outline: 1px solid gray;
   outline-offset: -1px;
-  width: 32px;
 }
 
-.tile0000 { background-position: 0 0 }
-.tile0001 { background-position: 6.67% 0 }
-.tile0002 { background-position: 13.33% 0 }
-.tile0003 { background-position: 20% 0 }
-.tile0004 { background-position: 26.67% 0 }
-.tile0005 { background-position: 33.33% 0 }
-.tile0006 { background-position: 40% 0 }
-.tile0007 { background-position: 46.67% 0 }
-.tile0008 { background-position: 53.33% 0 }
-.tile0009 { background-position: 60% 0 }
-.tile0010 { background-position: 66.67% 0 }
-.tile0011 { background-position: 73.33% 0 }
-.tile0012 { background-position: 80% 0 }
-.tile0013 { background-position: 86.67% 0 }
-.tile0014 { background-position: 93.33% 0 }
-.tile0015 { background-position: 100% 0 }
-.tile0100 { background-position: 0 6.67% }
+.tile0000 { background-position: 0% 0% }
+.tile0001 { background-position: 6.67% 0% }
+.tile0002 { background-position: 13.33% 0% }
+.tile0003 { background-position: 20% 0% }
+.tile0004 { background-position: 26.67% 0% }
+.tile0005 { background-position: 33.33% 0% }
+.tile0006 { background-position: 40% 0% }
+.tile0007 { background-position: 46.67% 0% }
+.tile0008 { background-position: 53.33% 0% }
+.tile0009 { background-position: 60% 0% }
+.tile0010 { background-position: 66.67% 0% }
+.tile0011 { background-position: 73.33% 0% }
+.tile0012 { background-position: 80% 0% }
+.tile0013 { background-position: 86.67% 0% }
+.tile0014 { background-position: 93.33% 0% }
+.tile0015 { background-position: 100% 0% }
+.tile0100 { background-position: 0% 6.67% }
 .tile0101 { background-position: 6.67% 6.67% }
 .tile0102 { background-position: 13.33% 6.67% }
 .tile0103 { background-position: 20% 6.67% }
@@ -59,7 +67,7 @@
 .tile0113 { background-position: 86.67% 6.67% }
 .tile0114 { background-position: 93.33% 6.67% }
 .tile0115 { background-position: 100% 6.67% }
-.tile0200 { background-position: 0 13.33% }
+.tile0200 { background-position: 0% 13.33% }
 .tile0201 { background-position: 6.67% 13.33% }
 .tile0202 { background-position: 13.33% 13.33% }
 .tile0203 { background-position: 20% 13.33% }
@@ -75,7 +83,7 @@
 .tile0213 { background-position: 86.67% 13.33% }
 .tile0214 { background-position: 93.33% 13.33% }
 .tile0215 { background-position: 100% 13.33% }
-.tile0300 { background-position: 0 20% }
+.tile0300 { background-position: 0% 20% }
 .tile0301 { background-position: 6.67% 20% }
 .tile0302 { background-position: 13.33% 20% }
 .tile0303 { background-position: 20% 20% }
@@ -91,7 +99,7 @@
 .tile0313 { background-position: 86.67% 20% }
 .tile0314 { background-position: 93.33% 20% }
 .tile0315 { background-position: 100% 20% }
-.tile0400 { background-position: 0 26.67% }
+.tile0400 { background-position: 0% 26.67% }
 .tile0401 { background-position: 6.67% 26.67% }
 .tile0402 { background-position: 13.33% 26.67% }
 .tile0403 { background-position: 20% 26.67% }
@@ -107,7 +115,7 @@
 .tile0413 { background-position: 86.67% 26.67% }
 .tile0414 { background-position: 93.33% 26.67% }
 .tile0415 { background-position: 100% 26.67% }
-.tile0500 { background-position: 0 33.33% }
+.tile0500 { background-position: 0% 33.33% }
 .tile0501 { background-position: 6.67% 33.33% }
 .tile0502 { background-position: 13.33% 33.33% }
 .tile0503 { background-position: 20% 33.33% }
@@ -123,7 +131,7 @@
 .tile0513 { background-position: 86.67% 33.33% }
 .tile0514 { background-position: 93.33% 33.33% }
 .tile0515 { background-position: 100% 33.33% }
-.tile0600 { background-position: 0 40% }
+.tile0600 { background-position: 0% 40% }
 .tile0601 { background-position: 6.67% 40% }
 .tile0602 { background-position: 13.33% 40% }
 .tile0603 { background-position: 20% 40% }
@@ -139,7 +147,7 @@
 .tile0613 { background-position: 86.67% 40% }
 .tile0614 { background-position: 93.33% 40% }
 .tile0615 { background-position: 100% 40% }
-.tile0700 { background-position: 0 46.67% }
+.tile0700 { background-position: 0% 46.67% }
 .tile0701 { background-position: 6.67% 46.67% }
 .tile0702 { background-position: 13.33% 46.67% }
 .tile0703 { background-position: 20% 46.67% }
@@ -155,7 +163,7 @@
 .tile0713 { background-position: 86.67% 46.67% }
 .tile0714 { background-position: 93.33% 46.67% }
 .tile0715 { background-position: 100% 46.67% }
-.tile0800 { background-position: 0 53.33% }
+.tile0800 { background-position: 0% 53.33% }
 .tile0801 { background-position: 6.67% 53.33% }
 .tile0802 { background-position: 13.33% 53.33% }
 .tile0803 { background-position: 20% 53.33% }
@@ -171,7 +179,7 @@
 .tile0813 { background-position: 86.67% 53.33% }
 .tile0814 { background-position: 93.33% 53.33% }
 .tile0815 { background-position: 100% 53.33% }
-.tile0900 { background-position: 0 60% }
+.tile0900 { background-position: 0% 60% }
 .tile0901 { background-position: 6.67% 60% }
 .tile0902 { background-position: 13.33% 60% }
 .tile0903 { background-position: 20% 60% }
@@ -187,7 +195,7 @@
 .tile0913 { background-position: 86.67% 60% }
 .tile0914 { background-position: 93.33% 60% }
 .tile0915 { background-position: 100% 60% }
-.tile1000 { background-position: 0 66.67% }
+.tile1000 { background-position: 0% 66.67% }
 .tile1001 { background-position: 6.67% 66.67% }
 .tile1002 { background-position: 13.33% 66.67% }
 .tile1003 { background-position: 20% 66.67% }
@@ -203,7 +211,7 @@
 .tile1013 { background-position: 86.67% 66.67% }
 .tile1014 { background-position: 93.33% 66.67% }
 .tile1015 { background-position: 100% 66.67% }
-.tile1100 { background-position: 0 73.33% }
+.tile1100 { background-position: 0% 73.33% }
 .tile1101 { background-position: 6.67% 73.33% }
 .tile1102 { background-position: 13.33% 73.33% }
 .tile1103 { background-position: 20% 73.33% }
@@ -219,7 +227,7 @@
 .tile1113 { background-position: 86.67% 73.33% }
 .tile1114 { background-position: 93.33% 73.33% }
 .tile1115 { background-position: 100% 73.33% }
-.tile1200 { background-position: 0 80% }
+.tile1200 { background-position: 0% 80% }
 .tile1201 { background-position: 6.67% 80% }
 .tile1202 { background-position: 13.33% 80% }
 .tile1203 { background-position: 20% 80% }
@@ -235,7 +243,7 @@
 .tile1213 { background-position: 86.67% 80% }
 .tile1214 { background-position: 93.33% 80% }
 .tile1215 { background-position: 100% 80% }
-.tile1300 { background-position: 0 86.67% }
+.tile1300 { background-position: 0% 86.67% }
 .tile1301 { background-position: 6.67% 86.67% }
 .tile1302 { background-position: 13.33% 86.67% }
 .tile1303 { background-position: 20% 86.67% }
@@ -251,7 +259,7 @@
 .tile1313 { background-position: 86.67% 86.67% }
 .tile1314 { background-position: 93.33% 86.67% }
 .tile1315 { background-position: 100% 86.67% }
-.tile1400 { background-position: 0 93.33% }
+.tile1400 { background-position: 0% 93.33% }
 .tile1401 { background-position: 6.67% 93.33% }
 .tile1402 { background-position: 13.33% 93.33% }
 .tile1403 { background-position: 20% 93.33% }
@@ -267,7 +275,7 @@
 .tile1413 { background-position: 86.67% 93.33% }
 .tile1414 { background-position: 93.33% 93.33% }
 .tile1415 { background-position: 100% 93.33% }
-.tile1500 { background-position: 0 100% }
+.tile1500 { background-position: 0% 100% }
 .tile1501 { background-position: 6.67% 100% }
 .tile1502 { background-position: 13.33% 100% }
 .tile1503 { background-position: 20% 100% }
