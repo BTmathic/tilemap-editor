@@ -5,12 +5,14 @@ import TilePane from './TilePane';
 import MapPane from './MapPane';
 import MapView from './MapView';
 import MapSettings from './MapSettings';
+import { SSL_OP_TLS_ROLLBACK_BUG } from 'constants';
 
 export default class Editor extends React.Component {
   state = {
     activeEdit: '',
     activeTile: '',
     borderToggle: true,
+    deleteMode: false,
     drag: false,
     editTileColumnIndex: '',
     editTileRowIndex: '',
@@ -85,7 +87,6 @@ export default class Editor extends React.Component {
     const mouseY = e.clientY - this.state.mapY + this.state.mapShiftTop; // + this.state.pageScrollOffset;
     const tileColumnIndex = Math.floor(mouseX/32);
     const tileRowIndex = Math.floor(mouseY/32);
-    //e.persist();
     if (this.state.drag) {
       const currentTile = tileRowIndex > -1 ? map[tileRowIndex][tileColumnIndex] : null;
       if ( // mouse inside the MapPane DOM window, including scroll
@@ -111,17 +112,22 @@ export default class Editor extends React.Component {
         this.setState(() => ({ activeTile: '', drag: false }));
       }
     } else { // clicking on the map loads a popup with each layer tile to edit
-      if (tileRowIndex > -1 && tileColumnIndex > -1 && tileColumnIndex < map[0].length && tileRowIndex < map.length
-        && mouseX - this.state.mapShiftLeft < this.state.mapDOMWidth &&
-        mouseY - this.state.mapShiftTop < this.state.mapDOMHeight
-      ) {
-        this.setState(() => ({
-          activeEdit: map[tileRowIndex][tileColumnIndex].slice(0),
-          editTileColumnIndex: tileColumnIndex,
-          editTileRowIndex: tileRowIndex
-        }));
+      if (!this.state.deleteMode) {
+        if (tileRowIndex > -1 && tileColumnIndex > -1 && tileColumnIndex < map[0].length && tileRowIndex < map.length
+          && mouseX - this.state.mapShiftLeft < this.state.mapDOMWidth &&
+          mouseY - this.state.mapShiftTop < this.state.mapDOMHeight
+        ) {
+          this.setState(() => ({
+            activeEdit: map[tileRowIndex][tileColumnIndex].slice(0),
+            editTileColumnIndex: tileColumnIndex,
+            editTileRowIndex: tileRowIndex
+          }));
+        }
+        this.onMouseDrag(false);
+      } else {
+        map[tileRowIndex][tileColumnIndex] = [''];
+        this.setState(() => ({ map }), this.storeMap);
       }
-      this.onMouseDrag(false);
     }
   }
 
@@ -151,7 +157,7 @@ export default class Editor extends React.Component {
   // When clicking on a tile on TilePane, we pickup the tile and drag
   // it around to to be able to use it on MapPane
   onTileClick = (tile, mouseX, mouseY) => {
-    if (!this.state.activeEdit) {
+    if (!this.state.activeEdit && !this.state.deleteMode) {
       this.setState(() => ({
         activeTile: tile,
         drag: true,
@@ -168,6 +174,10 @@ export default class Editor extends React.Component {
 
   toggleBorders = () => {
     this.setState((prevState) => ({ borderToggle: !prevState.borderToggle}));
+  }
+
+  toggleDeleteMode = () => {
+    this.setState((prevState) => ({ deleteMode: !prevState.deleteMode }));
   }
 
   toggleFullMap = () => {
@@ -205,25 +215,35 @@ export default class Editor extends React.Component {
         <div>
           <h1>Tilemap Editor</h1>
         </div>
-        <MapSettings 
-          changeMap={this.changeMap}
-          map={this.state.map}
-          mapHeight={this.state.mapHeight}
-          mapWidth={this.state.mapWidth}
-        />
-        <div className='view-map-button' onClick={this.toggleFullMap}>
-          View Map
+        <div className='editor--buttons-left'>
+          <MapSettings
+            changeMap={this.changeMap}
+            map={this.state.map}
+            mapHeight={this.state.mapHeight}
+            mapWidth={this.state.mapWidth}
+          />
+          <div className='delete-button'
+            onClick={this.toggleDeleteMode}
+            style={{ background: this.state.deleteMode ? 'red' : null }}
+          >
+            Delete Mode
+          </div>
         </div>
-        {
-          this.state.viewMap &&
-          <MapView map={this.state.map} toggleFullMap={this.toggleFullMap} />
-        }
-        <div
-          className='toggle-borders'
-          onClick={this.toggleBorders}
-          style={{ outline: `${this.state.borderToggle ? '2px' : '0'} solid gray` }}
-        >
-          Borders
+        <div className='editor--buttons-right'>
+          <div className='view-map-button' onClick={this.toggleFullMap}>
+            View Map
+          </div>
+          {
+            this.state.viewMap &&
+            <MapView map={this.state.map} toggleFullMap={this.toggleFullMap} />
+          }
+          <div
+            className='toggle-borders'
+            onClick={this.toggleBorders}
+            style={{ outline: `${this.state.borderToggle ? '2px' : '0'} solid gray` }}
+          >
+            Borders
+          </div>
         </div>
         <div className='editor' onMouseMove={this.onMouseMove}>
           {

@@ -8,26 +8,35 @@
     padding: 1rem;
     text-align: center;
   }
-  .map-settings__button, .view-map-button, .toggle-borders {
-    color: gold;
-    cursor: pointer;
-    font-weight: bold;
-    padding: 0.3rem 0.8rem;
+  .editor--buttons-left, .editor--buttons-right {
+    display: flex;
+    justify-content: space-evenly;
     position: absolute;
     top: 5%;
+    width: 25%;
+    .map-settings__button, .delete-button, .view-map-button, .toggle-borders {
+      color: gold;
+      cursor: pointer;
+      font-weight: bold;
+      padding: 0.3rem 0.8rem;
+    }
+    .map-settings__button {
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 5px;
+    }
+    .delete-button {
+      border: 2px solid red;
+    }
+    .view-map-button {
+      border: 2px solid white;
+      margin-top: -2px;
+    }
   }
-  .map-settings__button {
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 5px;
-    left: 5%;
+  .editor--buttons-left {
+    left: 2%;
   }
-  .view-map-button {
-    border: 2px solid white;
-    right: 15%;
-    margin-top: -2px;
-  }
-  .toggle-borders {
-    right: 5%;
+  .editor--buttons-right {
+    right: 2%;
   }
   .editor {
     margin-top: 2vh;
