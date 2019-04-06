@@ -233,10 +233,6 @@ export default class Editor extends React.Component {
           <div className='view-map-button' onClick={this.toggleFullMap}>
             View Map
           </div>
-          {
-            this.state.viewMap &&
-            <MapView map={this.state.map} toggleFullMap={this.toggleFullMap} />
-          }
           <div
             className='toggle-borders'
             onClick={this.toggleBorders}
@@ -245,6 +241,10 @@ export default class Editor extends React.Component {
             Borders
           </div>
         </div>
+        {
+          this.state.viewMap &&
+          <MapView map={this.state.map} toggleFullMap={this.toggleFullMap} />
+        }
         <div className='editor' onMouseMove={this.onMouseMove}>
           {
             this.state.activeEdit && 
