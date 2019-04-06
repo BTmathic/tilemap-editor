@@ -17,17 +17,15 @@ export default class MapView extends React.Component {
     canvas.width = width;
     canvas.style.height = height + 'px';
     canvas.style.width = width + 'px';
-    this.save().then(canvas => {
-      const image = new Image();
-      image.src = canvas.toDataURL();
-      this.saveAs(canvas.toDataURL(), 'tilemap.png');
+    this.createImage().then(canvas => {
+      const uri = canvas.toDataURL();
+      this.saveAs(uri, 'tilemap.png');
     }).catch((e) => {
       console.log('Something went wrong', e);
     });
   }
 
-  save = () => {
-    
+  createImage = () => {
     return new Promise((resolve, reject) => {
       const canvas = document.getElementById('canvas');
       const context = canvas.getContext('2d');
