@@ -4,33 +4,15 @@ import Tile from './Tile';
 export default class MapView extends React.Component {
   state = {
     activeClasslist: [],
-    saved: 'Save',
-    scale: 8
-  }
-
-  onSave = () => {
-    this.setState(() => ({ saved: 'Saving...' }));
-    const canvas = document.getElementById('canvas');
-    const height = this.props.map.length * 32;
-    const width = this.props.map[0].length * 32;
-    canvas.height = height;
-    canvas.width = width;
-    canvas.style.height = height + 'px';
-    canvas.style.width = width + 'px';
-    this.createImage().then(canvas => {
-      const uri = canvas.toDataURL();
-      this.saveAs(uri, 'tilemap.png');
-    }).catch((e) => {
-      console.log('Something went wrong', e);
-    });
+    saved: 'Save'
   }
 
   createImage = () => {
     return new Promise((resolve, reject) => {
       const canvas = document.getElementById('canvas');
       const context = canvas.getContext('2d');
-      for (let row=0; row < this.props.map.length; row++) {
-        for (let col=0; col < this.props.map[0].length; col++) {
+      for (let row = 0; row < this.props.map.length; row++) {
+        for (let col = 0; col < this.props.map[0].length; col++) {
           const layers = this.props.map[row][col].slice(1);
           for (let i = 0; i < layers.length; i++) {
             let imageUrl, style;
@@ -58,6 +40,39 @@ export default class MapView extends React.Component {
     });
   }
 
+  getCoords = (percent) => {
+    return percent * 512 / 100;
+  }
+
+  onSave = () => {
+    if (this.state.saved === 'View') {
+      const uri = this.state.canvas.toDataURL();
+      const w = window.open('');
+      w.document.write(
+        `<img src='${uri}' alt='Your tilemap!' />`
+      );
+    } else {
+      this.setState(() => ({ saved: 'Saving...' }));
+      const canvas = document.getElementById('canvas');
+      const height = this.props.map.length * 32;
+      const width = this.props.map[0].length * 32;
+      canvas.height = height;
+      canvas.width = width;
+      canvas.style.height = height + 'px';
+      canvas.style.width = width + 'px';
+      this.createImage().then(canvas => {
+        const uri = canvas.toDataURL();
+        this.saveAs(uri, 'tilemap.png');
+        this.setState(() => ({
+          canvas,
+          saved: 'View'
+        }));
+      }).catch((e) => {
+        console.log('Something went wrong', e);
+      });
+    }
+  }
+
   saveAs = (uri, filename) => {
     const link = document.createElement('a');
     if (typeof link.download === 'string') {
@@ -69,11 +84,8 @@ export default class MapView extends React.Component {
     } else {
       window.open(uri);
     }
-    this.props.toggleFullMap();
-  }
-
-  getCoords = (percent) => {
-    return percent * 512 / 100;
+    // Do not use this until network error issue is resolved with Chrome downloads
+    // this.props.toggleFullMap();
   }
 
   render() {
