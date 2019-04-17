@@ -55,8 +55,8 @@ export default class Editor extends React.Component {
     const mapShiftLeft = 32*shiftLeft;
     const mapShiftTop = 32*shiftTop;
     this.setState(() => ({
-      mapDOMHeight,
-      mapDOMWidth,
+      mapDOMHeight: mapDOMHeight < 1600 ? mapDOMHeight : 1600,
+      mapDOMWidth: mapDOMWidth < 1600 ? mapDOMWidth : 1600,
       mapShiftLeft,
       mapShiftTop,
       mapX: mapTopLeftX,
