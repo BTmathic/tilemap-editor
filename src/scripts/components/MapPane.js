@@ -7,10 +7,6 @@ export default class MapPane extends React.Component {
     mapShiftTop: 0
   }
 
-  // handle resizing if user makes map smaller than the map display
-  // on their screen
-  // Possibly just don't allow it to go smaller, cropping an image
-  // after downloading if fairly easy anyway
   handleResize = () => {
     const coords = this.mapPane.getBoundingClientRect();
     const mapWidth = Math.min(Math.floor((window.innerWidth * 0.95 - 380) / 32) * 32, 1600);
@@ -22,20 +18,18 @@ export default class MapPane extends React.Component {
     }), () => this.shiftMap(this.state.mapShiftTop, this.state.mapShiftLeft));
   }
 
-  // When map is smaller than on screen display, something goes wrong
-  // when shifting map down
   shiftMap = (vert, horiz) => {
     let mapShiftLeft = this.state.mapShiftLeft + horiz;
     let mapShiftTop = this.state.mapShiftTop + vert;
     if (mapShiftLeft < 0) {
       mapShiftLeft = 0;
     } else if (mapShiftLeft + this.state.mapWidth/32 > this.props.mapWidth) {
-      mapShiftLeft = this.props.mapWidth - this.state.mapWidth/32;
+      mapShiftLeft = Math.max(this.props.mapWidth - this.state.mapWidth/32, 0);
     }
     if (mapShiftTop < 0) {
       mapShiftTop = 0;
     } else if (mapShiftTop + this.state.mapHeight/32 > this.props.mapHeight) {
-      mapShiftTop = this.props.mapHeight - this.state.mapHeight/32;
+      mapShiftTop = Math.max(this.props.mapHeight - this.state.mapHeight/32, 0);
     }
     this.props.loadMapPosition(this.state.mapHeight, this.state.mapWidth, mapShiftLeft, mapShiftTop, this.state.coords.x, this.state.coords.y + window.scrollY)
     this.setState(() => ({
