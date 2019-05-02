@@ -45,6 +45,11 @@ export default class Editor extends React.Component {
     this.setState(() => ({ tilesOnPane: tiles}));
   }
 
+  handleResize = () => {
+    const width = window.innerWidth;
+    this.setState(() => ({ width }));
+  }
+
   handleScroll = () => {
     const pageScrollOffset = window.scrollY;
     this.setState(() => ({ pageScrollOffset }));
@@ -185,6 +190,8 @@ export default class Editor extends React.Component {
   }
 
   componentDidMount() {
+    this.handleResize();
+    window.addEventListener('resize', this.handleResize);
     window.addEventListener('scroll', this.handleScroll);
     window.addEventListener('mousemove', this.onMouseDragMove);
   }
@@ -205,6 +212,7 @@ export default class Editor extends React.Component {
   }
 
   componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
     window.removeEventListener('scroll', this.handleScroll);
     window.removeEventListener('mousemove', this.onMouseDragMove);
   }
@@ -300,6 +308,16 @@ export default class Editor extends React.Component {
             </div>
           </div>
         </div>
+        { this.state.width < 1000 && 
+          <div className='mobile'>
+            <div className='mobile--text'>
+              This site is lots and lots of (tedious) clicking so not at all enjoyable on smaller screens with excessive scrolling.
+            </div>
+            <div className='mobile--text'>
+              Please use a larger window to open the editor
+            </div>
+          </div>
+        }
       </div>
     );
   }
